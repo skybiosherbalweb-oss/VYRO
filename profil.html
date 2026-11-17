@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08070d">
+
+<title>VYRO — Profil</title>
+
+<style>
+
+:root {
+    --bg: #08070d;
+    --card: #100d16;
+    --card2: #17111f;
+    --purple: #75449a;
+    --purple-soft: #593572;
+    --purple-light: #b49acb;
+    --text: #f3edf8;
+    --muted: #95869f;
+    --border: rgba(150,115,175,.13);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+button, input, textarea, select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+header {
+    height: 65px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    background: rgba(8,7,13,.95);
+}
+
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    color: var(--purple-light);
+}
+
+.header-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    color: var(--text);
+    font-size: 19px;
+}
+
+.container {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+    padding: 20px 15px 50px;
+}
+
+.banner {
+    height: 145px;
+    border-radius: 18px;
+    background: linear-gradient(
+        120deg,
+        #21152d,
+        #110d19 65%,
+        #30203d
+    );
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.banner::after {
+    content: "";
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: rgba(117,68,154,.15);
+    right: -35px;
+    top: -65px;
+}
+
+.profile-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    margin-top: -35px;
+    position: relative;
+    padding: 20px;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 82px;
+    height: 82px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    background: var(--card2);
+    object-fit: cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: var(--purple-light);
+    flex-shrink: 0;
+}
+
+.profile-info {
+    min-width: 0;
+}
+
+.profile-info h2 {
+    font-size: 20px;
+    overflow-wrap: anywhere;
+}
+
+.profile-info p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-top: 5px;
+    overflow-wrap: anywhere;
+}
+
+.bio {
+    margin-top: 18px;
+    color: #c8bdcf;
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.edit-button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    border-radius: 11px;
+    border: 1px solid var(--border);
+    background: var(--card2);
+    color: var(--text);
+    font-weight: bold;
+}
+
+.edit-button:active,
+.header-button:active {
+    transform: scale(.98);
+}
+
+.section {
+    margin-top: 25px;
+}
+
+.section-title {
+    font-size: 17px;
+    margin-bottom: 12px;
+}
+
+.account-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.account-row {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.account-row:last-child {
+    border-bottom: none;
+}
+
+.row-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.row-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: var(--card2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.row-text strong {
+    display: block;
+    font-size: 14px;
+}
+
+.row-text small {
+    display: block;
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.row-action {
+    color: var(--purple-light);
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.danger {
+    color: #df7777;
+}
+
+.status {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 12px;
+    text-align: center;
+}
+
+/* MODALES */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.78);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 430px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 22px;
+    animation: appear .2s ease;
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 19px;
+}
+
+.close-button {
+    border: none;
+    background: var(--card2);
+    color: var(--text);
+    width: 34px;
+    height: 34px;
+    border-radius: 9px;
+    font-size: 19px;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 13px;
+    background: var(--card2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    outline: none;
+    color: var(--text);
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--purple);
+}
+
+.form-group textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+.form-group input[type="file"] {
+    font-size: 12px;
+}
+
+.primary-button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    background: var(--purple);
+    color: white;
+    font-weight: bold;
+}
+
+.secondary-button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 9px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card2);
+    color: var(--text);
+}
+
+.primary-button:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.form-message {
+    font-size: 13px;
+    text-align: center;
+    margin-top: 12px;
+    color: var(--purple-light);
+    line-height: 1.5;
+}
+
+.modal-avatar {
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0 auto 18px;
+    background: var(--card2);
+    border: 2px solid var(--purple-soft);
+}
+
+.setting-switch {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--purple);
+}
+
+.setting-select {
+    max-width: 125px;
+    padding: 7px;
+    background: var(--card2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+@media (max-width: 380px) {
+
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .profile-card {
+        padding: 15px;
+    }
+
+    .avatar {
+        width: 70px;
+        height: 70px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">VYRO</div>
+
+    <button
+        class="header-button"
+        onclick="openSettings()"
+        aria-label="Paramètres">
+        ⚙
+    </button>
+
+</header>
+
+<main class="container">
+
+    <div class="banner"></div>
+
+    <section class="profile-card">
+
+        <div class="profile-top">
+
+            <img
+                id="profileAvatar"
+                class="avatar"
+                src=""
+                alt="Photo de profil">
+
+            <div class="profile-info">
+
+                <h2 id="profileName">Chargement...</h2>
+
+                <p id="profileEmail">
+                    Chargement du compte...
+                </p>
+
+            </div>
+
+        </div>
+
+        <p class="bio" id="profileBio">
+            Aucune biographie pour le moment.
+        </p>
+
+        <button
+            class="edit-button"
+            onclick="openEditProfile()">
+            ✎ Modifier mon profil
+        </button>
+
+    </section>
+
+    <section class="section">
+
+        <h3 class="section-title">Mon compte</h3>
+
+        <div class="account-box">
+
+            <div class="account-row">
+
+                <div class="row-left">
+
+                    <div class="row-icon">👤</div>
+
+                    <div class="row-text">
+                        <strong>Informations personnelles</strong>
+                        <small>Modifier ton profil VYRO</small>
+                    </div>
+
+                </div>
+
+                <button
+                    class="row-action"
+                    onclick="openEditProfile()">
+                    Modifier
+                </button>
+
+            </div>
+
+            <div class="account-row">
+
+                <div class="row-left">
+
+                    <div class="row-icon">🔒</div>
+
+                    <div class="row-text">
+                        <strong>Sécurité</strong>
+                        <small>Modifier ton mot de passe</small>
+                    </div>
+
+                </div>
+
+                <button
+                    class="row-action"
+                    onclick="openPassword()">
+                    Ouvrir
+                </button>
+
+            </div>
+
+            <div class="account-row">
+
+                <div class="row-left">
+
+                    <div class="row-icon">⚙</div>
+
+                    <div class="row-text">
+                        <strong>Paramètres</strong>
+                        <small>Personnaliser ton expérience</small>
+                    </div>
+
+                </div>
+
+                <button
+                    class="row-action"
+                    onclick="openSettings()">
+                    Ouvrir
+                </button>
+
+            </div>
+
+            <div class="account-row">
+
+                <div class="row-left">
+
+                    <div class="row-icon">🚪</div>
+
+                    <div class="row-text">
+                        <strong>Déconnexion</strong>
+                        <small>Quitter ton compte</small>
+                    </div>
+
+                </div>
+
+                <button
+                    class="row-action danger"
+                    onclick="openLogout()">
+                    Quitter
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <p class="status" id="pageStatus">
+        Chargement de ton profil...
+    </p>
+
+</main>
+
+<!-- MODIFICATION DU PROFIL -->
+
+<div class="modal" id="editModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Modifier mon profil</h2>
+
+            <button
+                class="close-button"
+                onclick="closeModal('editModal')">
+                ×
+            </button>
+
+        </div>
+
+        <img
+            id="previewAvatar"
+            class="modal-avatar"
+            src=""
+            alt="Aperçu de la photo">
+
+        <div class="form-group">
+
+            <label>Photo de profil</label>
+
+            <input
+                type="file"
+                id="photoInput"
+                accept="image/*"
+                onchange="previewPhoto(event)">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Nom d'utilisateur</label>
+
+            <input
+                type="text"
+                id="editUsername"
+                maxlength="30"
+                placeholder="Ton pseudo">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Biographie</label>
+
+            <textarea
+                id="editBio"
+                maxlength="160"
+                placeholder="Parle un peu de toi..."></textarea>
+
+        </div>
+
+        <button
+            class="primary-button"
+            id="saveProfileBtn"
+            onclick="saveProfile()">
+            Enregistrer les modifications
+        </button>
+
+        <button
+            class="secondary-button"
+            onclick="closeModal('editModal')">
+            Annuler
+        </button>
+
+        <p class="form-message" id="profileMessage"></p>
+
+    </div>
+
+</div>
+
+<!-- PARAMÈTRES -->
+
+<div class="modal" id="settingsModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Paramètres</h2>
+
+            <button
+                class="close-button"
+                onclick="closeModal('settingsModal')">
+                ×
+            </button>
+
+        </div>
+
+        <div class="account-row">
+
+            <div class="row-text">
+                <strong>Notifications</strong>
+                <small>Activer les notifications</small>
+            </div>
+
+            <input
+                type="checkbox"
+                id="notificationsSetting"
+                class="setting-switch">
+
+        </div>
+
+        <div class="account-row">
+
+            <div class="row-text">
+                <strong>Mode sombre</strong>
+                <small>Interface sombre de VYRO</small>
+            </div>
+
+            <input
+                type="checkbox"
+                id="darkModeSetting"
+                class="setting-switch">
+
+        </div>
+
+        <div class="account-row">
+
+            <div class="row-text">
+                <strong>Langue</strong>
+                <small>Langue de l'application</small>
+            </div>
+
+            <select
+                id="languageSetting"
+                class="setting-select">
+
+                <option value="fr">Français</option>
+                <option value="en">English</option>
+
+            </select>
+
+        </div>
+
+        <div class="account-row">
+
+            <div class="row-text">
+                <strong>Confidentialité</strong>
+                <small>Visibilité de ton profil</small>
+            </div>
+
+            <select
+                id="privacySetting"
+                class="setting-select">
+
+                <option value="public">Public</option>
+                <option value="private">Privé</option>
+
+            </select>
+
+        </div>
+
+        <button
+            class="primary-button"
+            style="margin-top:20px"
+            onclick="saveSettings()">
+            Enregistrer
+        </button>
+
+        <p class="form-message" id="settingsMessage"></p>
+
+    </div>
+
+</div>
+
+<!-- CHANGEMENT DE MOT DE PASSE -->
+
+<div class="modal" id="passwordModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Sécurité du compte</h2>
+
+            <button
+                class="close-button"
+                onclick="closeModal('passwordModal')">
+                ×
+            </button>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Nouveau mot de passe</label>
+
+            <input
+                type="password"
+                id="newPassword"
+                minlength="8"
+                placeholder="8 caractères minimum">
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Confirmer le mot de passe</label>
+
+            <input
+                type="password"
+                id="confirmPassword"
+                placeholder="Confirme ton mot de passe">
+
+        </div>
+
+        <button
+            class="primary-button"
+            id="passwordBtn"
+            onclick="changePassword()">
+            Modifier le mot de passe
+        </button>
+
+        <p class="form-message" id="passwordMessage"></p>
+
+    </div>
+
+</div>
+
+<!-- DÉCONNEXION -->
+
+<div class="modal" id="logoutModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>Déconnexion</h2>
+
+            <button
+                class="close-button"
+                onclick="closeModal('logoutModal')">
+                ×
+            </button>
+
+        </div>
+
+        <p style="color:var(--muted);line-height:1.6;margin-bottom:20px">
+            Veux-tu vraiment te déconnecter de ton compte VYRO ?
+        </p>
+
+        <button
+            class="primary-button"
+            id="logoutBtn"
+            onclick="logout()">
+            Oui, me déconnecter
+        </button>
+
+        <button
+            class="secondary-button"
+            onclick="closeModal('logoutModal')">
+            Annuler
+        </button>
+
+        <p class="form-message" id="logoutMessage"></p>
+
+    </div>
+
+</div>
+<script type="module">
+
+import { createClient }
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+/* =========================
+   CONFIGURATION SUPABASE
+========================= */
+
+const SUPABASE_URL =
+"https://baudgidnnyjgfnepbiyn.supabase.co";
+
+/* Remplace uniquement cette valeur par ta vraie clé Publishable. */
+
+const SUPABASE_KEY =
+"sb_publishable_R8oJ3O_avypAbwyATrcreQ_pt47CUb7";
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const BUCKET = "profile-photos";
+
+let currentUser = null;
+let selectedPhoto = null;
+let currentAvatar = null;
+
+/* =========================
+   OUTILS
+========================= */
+
+function showMessage(id, message) {
+
+    const element = document.getElementById(id);
+
+    if (element) {
+        element.textContent = message;
+    }
+
+}
+
+function friendlyError(error) {
+
+    return error?.message || "Une erreur est survenue.";
+
+}
+
+function openModal(id) {
+
+    document.getElementById(id)?.classList.add("active");
+
+}
+
+window.closeModal = function(id) {
+
+    document.getElementById(id)?.classList.remove("active");
+
+};
+
+/* =========================
+   OUVERTURE DES MODALES
+========================= */
+
+window.openEditProfile = function() {
+
+    if (!currentUser) {
+        alert("Ton compte n'est pas encore chargé.");
+        return;
+    }
+
+    openModal("editModal");
+
+};
+
+window.openSettings = function() {
+
+    openModal("settingsModal");
+
+};
+
+window.openPassword = function() {
+
+    openModal("passwordModal");
+
+};
+
+window.openLogout = function() {
+
+    openModal("logoutModal");
+
+};
+
+/* =========================
+   IMAGE PAR DÉFAUT
+========================= */
+
+function defaultAvatar() {
+
+    return "data:image/svg+xml," +
+    encodeURIComponent(
+        '<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><rect width="100%" height="100%" fill="#17111f"/><text x="50%" y="55%" text-anchor="middle" font-size="42" fill="#b49acb">V</text></svg>'
+    );
+
+}
+
+/* =========================
+   CHARGEMENT DU PROFIL
+========================= */
+
+async function loadProfile() {
+
+    try {
+
+        const {
+            data: { user },
+            error
+        } = await supabase.auth.getUser();
+
+        if (error) throw error;
+
+        if (!user) {
+
+            currentUser = null;
+
+            document.getElementById("profileName").textContent =
+                "Non connecté";
+
+            document.getElementById("profileEmail").textContent =
+                "Connecte-toi pour accéder à ton profil";
+
+            document.getElementById("profileAvatar").src =
+                defaultAvatar();
+
+            document.getElementById("pageStatus").textContent =
+                "Aucune session active.";
+
+            return;
+
+        }
+
+        currentUser = user;
+
+        const metadata = user.user_metadata || {};
+
+        const username =
+            metadata.username ||
+            metadata.nom ||
+            user.email?.split("@")[0] ||
+            "Utilisateur";
+
+        const bio = metadata.bio || "";
+
+        const avatar = metadata.avatar_url || "";
+
+        currentAvatar = avatar;
+
+        document.getElementById("profileName").textContent =
+            username;
+
+        document.getElementById("profileEmail").textContent =
+            user.email || "";
+
+        document.getElementById("profileBio").textContent =
+            bio || "Aucune biographie pour le moment.";
+
+        document.getElementById("editUsername").value =
+            username;
+
+        document.getElementById("editBio").value =
+            bio;
+
+        document.getElementById("profileAvatar").src =
+            avatar || defaultAvatar();
+
+        document.getElementById("previewAvatar").src =
+            avatar || defaultAvatar();
+
+        document.getElementById("pageStatus").textContent =
+            "Ton profil VYRO est à jour.";
+
+    } catch (error) {
+
+        console.error("Erreur profil :", error);
+
+        showMessage(
+            "pageStatus",
+            "Erreur : " + friendlyError(error)
+        );
+
+    }
+
+}
+
+/* =========================
+   INITIALISATION
+========================= */
+
+async function initializeProfile() {
+
+    try {
+
+        if (
+            !SUPABASE_KEY ||
+            SUPABASE_KEY === "COLLE_TA_CLE_PUBLISHABLE_ICI"
+        ) {
+
+            throw new Error(
+                "Ajoute ta clé Publishable Supabase dans le code."
+            );
+
+        }
+
+        const {
+            data: { session },
+            error
+        } = await supabase.auth.getSession();
+
+        if (error) throw error;
+
+        if (!session) {
+
+            currentUser = null;
+
+            document.getElementById("profileName").textContent =
+                "Non connecté";
+
+            document.getElementById("profileEmail").textContent =
+                "Connecte-toi pour accéder à ton profil";
+
+            document.getElementById("profileAvatar").src =
+                defaultAvatar();
+
+            document.getElementById("pageStatus").textContent =
+                "Connecte-toi pour utiliser ton profil.";
+
+            return;
+
+        }
+
+        await loadProfile();
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "pageStatus",
+            friendlyError(error)
+        );
+
+    }
+
+}
+
+/* =========================
+   APERÇU DE LA PHOTO
+========================= */
+
+window.previewPhoto = function(event) {
+
+    const file = event.target.files?.[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+
+        showMessage(
+            "profileMessage",
+            "Choisis un fichier image valide."
+        );
+
+        event.target.value = "";
+        return;
+
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+
+        showMessage(
+            "profileMessage",
+            "La photo ne doit pas dépasser 5 Mo."
+        );
+
+        event.target.value = "";
+        return;
+
+    }
+
+    selectedPhoto = file;
+
+    document.getElementById("previewAvatar").src =
+        URL.createObjectURL(file);
+
+    showMessage("profileMessage", "");
+
+};
+
+/* =========================
+   ENREGISTREMENT DU PROFIL
+========================= */
+
+window.saveProfile = async function() {
+
+    if (!currentUser) {
+
+        showMessage(
+            "profileMessage",
+            "Aucun compte connecté."
+        );
+
+        return;
+
+    }
+
+    const button = document.getElementById("saveProfileBtn");
+
+    const username = document
+        .getElementById("editUsername")
+        .value.trim();
+
+    const bio = document
+        .getElementById("editBio")
+        .value.trim();
+
+    if (!username) {
+
+        showMessage(
+            "profileMessage",
+            "Le nom d'utilisateur est obligatoire."
+        );
+
+        return;
+
+    }
+
+    if (username.length < 3) {
+
+        showMessage(
+            "profileMessage",
+            "Le pseudo doit contenir au moins 3 caractères."
+        );
+
+        return;
+
+    }
+
+    button.disabled = true;
+    button.textContent = "Enregistrement...";
+
+    showMessage("profileMessage", "");
+
+    try {
+
+        let avatarUrl = currentAvatar;
+
+        /* ENVOI DE LA PHOTO */
+
+        if (selectedPhoto) {
+
+            const extension =
+                selectedPhoto.name.split(".").pop().toLowerCase();
+
+            const filePath =
+                currentUser.id + "/avatar." + extension;
+
+            const {
+                error: uploadError
+            } = await supabase.storage
+                .from(BUCKET)
+                .upload(filePath, selectedPhoto, {
+                    upsert: true,
+                    contentType: selectedPhoto.type
+                });
+
+            if (uploadError) throw uploadError;
+
+            const {
+                data: publicData
+            } = supabase.storage
+                .from(BUCKET)
+                .getPublicUrl(filePath);
+
+            avatarUrl = publicData.publicUrl;
+
+        }
+
+        /* ENREGISTREMENT DES INFORMATIONS */
+
+        const {
+            data,
+            error
+        } = await supabase.auth.updateUser({
+
+            data: {
+                username: username,
+                bio: bio,
+                avatar_url: avatarUrl
+            }
+
+        });
+
+        if (error) throw error;
+
+        currentUser = data.user;
+        currentAvatar = avatarUrl;
+        selectedPhoto = null;
+
+        document.getElementById("photoInput").value = "";
+
+        document.getElementById("profileName").textContent =
+            username;
+
+        document.getElementById("profileBio").textContent =
+            bio || "Aucune biographie pour le moment.";
+
+        document.getElementById("profileAvatar").src =
+            avatarUrl || defaultAvatar();
+
+        document.getElementById("previewAvatar").src =
+            avatarUrl || defaultAvatar();
+
+        showMessage(
+            "profileMessage",
+            "Profil enregistré avec succès !"
+        );
+
+        document.getElementById("pageStatus").textContent =
+            "Ton profil VYRO est à jour.";
+
+        setTimeout(() => {
+            closeModal("editModal");
+        }, 1200);
+
+    } catch (error) {
+
+        console.error("Erreur sauvegarde :", error);
+
+        showMessage(
+            "profileMessage",
+            "Erreur : " + friendlyError(error)
+        );
+
+    } finally {
+
+        button.disabled = false;
+
+        button.textContent =
+            "Enregistrer les modifications";
+
+    }
+
+};
+
+/* =========================
+   PARAMÈTRES
+========================= */
+
+function loadSettings() {
+
+    document.getElementById("notificationsSetting").checked =
+        localStorage.getItem("vyro_notifications") !== "false";
+
+    document.getElementById("darkModeSetting").checked =
+        localStorage.getItem("vyro_darkmode") !== "false";
+
+    document.getElementById("languageSetting").value =
+        localStorage.getItem("vyro_language") || "fr";
+
+    document.getElementById("privacySetting").value =
+        localStorage.getItem("vyro_privacy") || "public";
+
+}
+
+window.saveSettings = function() {
+
+    localStorage.setItem(
+        "vyro_notifications",
+        document.getElementById("notificationsSetting").checked
+    );
+
+    localStorage.setItem(
+        "vyro_darkmode",
+        document.getElementById("darkModeSetting").checked
+    );
+
+    localStorage.setItem(
+        "vyro_language",
+        document.getElementById("languageSetting").value
+    );
+
+    localStorage.setItem(
+        "vyro_privacy",
+        document.getElementById("privacySetting").value
+    );
+
+    showMessage(
+        "settingsMessage",
+        "Paramètres enregistrés sur cet appareil."
+    );
+
+};
+
+/* =========================
+   CHANGEMENT DU MOT DE PASSE
+========================= */
+
+window.changePassword = async function() {
+
+    const password =
+        document.getElementById("newPassword").value;
+
+    const confirmation =
+        document.getElementById("confirmPassword").value;
+
+    if (password.length < 8) {
+
+        showMessage(
+            "passwordMessage",
+            "Le mot de passe doit contenir au moins 8 caractères."
+        );
+
+        return;
+
+    }
+
+    if (password !== confirmation) {
+
+        showMessage(
+            "passwordMessage",
+            "Les deux mots de passe ne correspondent pas."
+        );
+
+        return;
+
+    }
+
+    const button = document.getElementById("passwordBtn");
+
+    button.disabled = true;
+    button.textContent = "Modification...";
+
+    try {
+
+        const { error } = await supabase.auth.updateUser({
+
+            password: password
+
+        });
+
+        if (error) throw error;
+
+        document.getElementById("newPassword").value = "";
+        document.getElementById("confirmPassword").value = "";
+
+        showMessage(
+            "passwordMessage",
+            "Mot de passe modifié avec succès !"
+        );
+
+    } catch (error) {
+
+        showMessage(
+            "passwordMessage",
+            "Erreur : " + friendlyError(error)
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = "Modifier le mot de passe";
+
+    }
+
+};
+
+/* =========================
+   DÉCONNEXION
+========================= */
+
+window.logout = async function() {
+
+    const button = document.getElementById("logoutBtn");
+
+    button.disabled = true;
+    button.textContent = "Déconnexion...";
+
+    try {
+
+        const { error } = await supabase.auth.signOut();
+
+        if (error) throw error;
+
+        window.location.href = "connexion.html";
+
+    } catch (error) {
+
+        showMessage(
+            "logoutMessage",
+            "Erreur : " + friendlyError(error)
+        );
+
+        button.disabled = false;
+        button.textContent = "Oui, me déconnecter";
+
+    }
+
+};
+
+/* =========================
+   FERMETURE EN CLIQUANT DEHORS
+========================= */
+
+document.querySelectorAll(".modal").forEach(modal => {
+
+    modal.addEventListener("click", event => {
+
+        if (event.target === modal) {
+            modal.classList.remove("active");
+        }
+
+    });
+
+});
+
+/* =========================
+   INITIALISATION FINALE
+========================= */
+
+loadSettings();
+initializeProfile();
+
+</script>
+
+</body>
+</html>

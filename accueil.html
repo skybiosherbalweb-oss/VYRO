@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08070d">
+
+<title>VYRO — Discussions</title>
+
+<style>
+:root {
+    --bg: #08070d;
+    --surface: #100d16;
+    --surface2: #17111f;
+    --surface3: #21172c;
+    --primary: #75449a;
+    --primary-light: #b49acb;
+    --text: #ffffff;
+    --muted: #9990a5;
+    --border: rgba(255,255,255,.08);
+    --danger: #ff5364;
+    --success: #36d69a;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+}
+
+button, input, textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app {
+    width: 100%;
+    max-width: 650px;
+    min-height: 100vh;
+    margin: auto;
+    padding-bottom: 85px;
+}
+
+/* HEADER */
+
+.top-header {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: rgba(8,7,13,.96);
+    backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border);
+    padding: 17px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: var(--primary-light);
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.icon-button {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    color: white;
+    background: var(--surface2);
+    font-size: 18px;
+}
+
+.page-title {
+    margin-top: 22px;
+}
+
+.page-title h1 {
+    font-size: 25px;
+    margin-bottom: 6px;
+}
+
+.page-title p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+/* SEARCH */
+
+.search-box {
+    margin: 18px 15px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 13px 15px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    font-size: 14px;
+}
+
+/* FILTERS */
+
+.filters {
+    display: flex;
+    gap: 9px;
+    padding: 0 15px 18px;
+    overflow-x: auto;
+}
+
+.filter-btn {
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    border-radius: 20px;
+    padding: 9px 16px;
+    white-space: nowrap;
+    font-size: 12px;
+}
+
+.filter-btn.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* SECTION */
+
+.section-heading {
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.section-heading h2 {
+    font-size: 16px;
+}
+
+.section-heading span {
+    font-size: 12px;
+    color: var(--muted);
+}
+
+/* CONTACTS */
+
+.contacts {
+    display: flex;
+    gap: 17px;
+    overflow-x: auto;
+    padding: 10px 16px 20px;
+}
+
+.contact {
+    min-width: 58px;
+    text-align: center;
+}
+
+.contact-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    background: var(--surface3);
+    border: 2px solid var(--primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: auto auto 7px;
+    font-weight: bold;
+    overflow: hidden;
+}
+
+.contact-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.contact-name {
+    font-size: 11px;
+    color: var(--muted);
+}
+
+/* CONVERSATIONS */
+
+.conversation-list {
+    padding: 5px 12px;
+}
+
+.conversation {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 8px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+}
+
+.conversation:hover {
+    background: rgba(255,255,255,.025);
+}
+
+.conversation-avatar {
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: var(--surface3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+.conversation-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.conversation-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.conversation-name {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 7px;
+}
+
+.conversation-preview {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.conversation-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.conversation-time {
+    font-size: 10px;
+    color: var(--muted);
+}
+
+.unread-count {
+    background: var(--primary);
+    color: white;
+    border-radius: 20px;
+    min-width: 19px;
+    height: 19px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+
+/* OFFICIAL */
+
+.official-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #398bff;
+    color: white;
+    font-size: 10px;
+    margin-left: 4px;
+}
+
+/* FLOATING BUTTON */
+
+.floating-button {
+    position: fixed;
+    bottom: 95px;
+    right: max(20px, calc((100vw - 610px) / 2));
+    width: 58px;
+    height: 58px;
+    border: none;
+    border-radius: 19px;
+    background: var(--primary);
+    color: white;
+    font-size: 25px;
+    box-shadow: 0 8px 25px rgba(117,68,154,.35);
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 650px;
+    background: rgba(16,13,22,.97);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 5px calc(12px + env(safe-area-inset-bottom));
+    z-index: 30;
+}
+
+.nav-item {
+    color: var(--muted);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+}
+
+.nav-item span:first-child {
+    font-size: 20px;
+}
+
+.nav-item.active {
+    color: var(--primary-light);
+}
+
+/* MODALS */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.75);
+    z-index: 100;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.close-button {
+    border: none;
+    background: var(--surface3);
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 13px;
+    color: var(--muted);
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 13px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    color: white;
+    outline: none;
+}
+
+.primary-button {
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    background: var(--primary);
+    color: white;
+    font-weight: bold;
+}
+
+.secondary-button {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 13px;
+    background: var(--surface2);
+    color: white;
+}
+
+.toast {
+    position: fixed;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--surface3);
+    color: white;
+    border: 1px solid var(--border);
+    padding: 13px 18px;
+    border-radius: 12px;
+    z-index: 300;
+    display: none;
+    font-size: 13px;
+}
+
+.toast.show {
+    display: block;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="top-header">
+    <div class="header-top">
+        <div class="logo">VYRO</div>
+
+        <div class="header-actions">
+            <button class="icon-button" onclick="openNotifications()">♧</button>
+            <button class="icon-button" onclick="openSettings()">⚙</button>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h1>Discussions</h1>
+        <p>Connectez-vous à votre univers.</p>
+    </div>
+</header>
+
+<div class="search-box">
+    <span>⌕</span>
+    <input type="search" id="conversationSearch"
+           placeholder="Rechercher une discussion...">
+</div>
+
+<div class="filters">
+    <button class="filter-btn active" onclick="filterConversations('all',this)">Toutes</button>
+    <button class="filter-btn" onclick="filterConversations('unread',this)">Non lues</button>
+    <button class="filter-btn" onclick="filterConversations('groups',this)">Groupes</button>
+</div>
+
+<div class="section-heading">
+    <h2>Contacts</h2>
+    <span>En ligne</span>
+</div>
+
+<div class="contacts" id="contactsList">
+    <div class="contact">
+        <div class="contact-avatar">+</div>
+        <div class="contact-name">Ajouter</div>
+    </div>
+</div>
+
+<div class="section-heading">
+    <h2>Messages</h2>
+    <span id="conversationCount">0 discussion</span>
+</div>
+
+<div class="conversation-list" id="conversationList">
+
+    <div class="conversation" id="vyroOfficialConversation"
+         onclick="openOfficialChat()">
+
+        <div class="conversation-avatar">
+            <span>V</span>
+        </div>
+
+        <div class="conversation-info">
+            <div class="conversation-name">
+                VYRO
+                <span class="official-badge">✓</span>
+            </div>
+
+            <div class="conversation-preview" id="officialPreview">
+                Discussion officielle
+            </div>
+        </div>
+
+        <div class="conversation-meta">
+            <span class="conversation-time">Officiel</span>
+        </div>
+
+    </div>
+
+</div>
+
+<button class="floating-button" onclick="openNewConversation()">＋</button>
+
+</div>
+
+<!-- FIN PARTIE 1/3 -->
+
+<!-- LA PARTIE 2/3 SERA COLLÉE ICI -->
+  <!-- NAVIGATION -->
+
+<nav class="bottom-nav">
+    <a href="accueil.html" class="nav-item active">
+        <span>▣</span>
+        <span>Discussions</span>
+    </a>
+
+    <a href="actus.html" class="nav-item">
+        <span>◈</span>
+        <span>Actus</span>
+    </a>
+
+    <a href="communautes.html" class="nav-item">
+        <span>♧</span>
+        <span>Communautés</span>
+    </a>
+
+    <a href="appels.html" class="nav-item">
+        <span>☎</span>
+        <span>Appels</span>
+    </a>
+</nav>
+
+<!-- DISCUSSION OFFICIELLE VYRO -->
+
+<div class="modal" id="officialChatModal">
+
+    <div class="modal-content official-chat">
+
+        <div class="official-chat-header">
+
+            <button class="close-button" onclick="closeOfficialChat()">‹</button>
+
+            <div class="official-avatar">
+                <span>V</span>
+            </div>
+
+            <div class="official-header-info">
+                <div class="official-header-name">
+                    VYRO <span class="official-badge">✓</span>
+                </div>
+                <div class="official-status">Compte officiel</div>
+            </div>
+
+            <button class="icon-button" onclick="showOfficialInfo()">⋮</button>
+
+        </div>
+
+        <div class="official-chat-body" id="officialMessages">
+            <!-- Les vrais messages seront chargés ici depuis Supabase. -->
+        </div>
+
+        <div class="official-empty" id="officialEmpty">
+            <div class="empty-icon">V</div>
+            <h3>Bienvenue chez VYRO</h3>
+            <p>Aucun message pour le moment.</p>
+        </div>
+
+        <div class="official-readonly" id="officialReadOnlyNotice">
+            Vous pouvez consulter les messages officiels de VYRO.
+        </div>
+
+        <div class="official-composer" id="officialAdminComposer" style="display:none;">
+
+            <textarea id="officialMessageInput"
+                placeholder="Écrire un message..."
+                rows="1"></textarea>
+
+            <button id="sendOfficialMessage" onclick="publishOfficialMessage()">
+                ➤
+            </button>
+
+        </div>
+
+    </div>
+</div>
+
+<!-- PROFIL -->
+
+<div class="modal" id="profileModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Mon profil</h2>
+            <button class="close-button" onclick="closeModal('profileModal')">×</button>
+        </div>
+
+        <div id="profileContent">
+            <p>Chargement du profil...</p>
+        </div>
+
+        <button class="primary-button" onclick="openEditProfile()">
+            Modifier mon profil
+        </button>
+    </div>
+</div>
+
+<!-- MODIFICATION PROFIL -->
+
+<div class="modal" id="editProfileModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Modifier mon profil</h2>
+            <button class="close-button" onclick="closeModal('editProfileModal')">×</button>
+        </div>
+
+        <div class="form-group">
+            <label>Nom d'utilisateur</label>
+            <input id="editUsername" placeholder="Ton nom">
+        </div>
+
+        <div class="form-group">
+            <label>Photo de profil (URL)</label>
+            <input id="editAvatar" placeholder="Adresse de l'image">
+        </div>
+
+        <button class="primary-button" onclick="saveProfile()">
+            Enregistrer
+        </button>
+    </div>
+</div>
+
+<!-- PARAMÈTRES -->
+
+<div class="modal" id="settingsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Paramètres</h2>
+            <button class="close-button" onclick="closeModal('settingsModal')">×</button>
+        </div>
+
+        <button class="secondary-button" onclick="openProfile()">Mon profil</button>
+        <br><br>
+        <button class="secondary-button" onclick="logout()">Déconnexion</button>
+    </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+
+<div class="modal" id="notificationsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Notifications</h2>
+            <button class="close-button" onclick="closeModal('notificationsModal')">×</button>
+        </div>
+
+        <p style="color:var(--muted);font-size:13px;">
+            Aucune notification pour le moment.
+        </p>
+    </div>
+</div>
+
+<!-- NOUVELLE DISCUSSION -->
+
+<div class="modal" id="newConversationModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Nouvelle discussion</h2>
+            <button class="close-button" onclick="closeModal('newConversationModal')">×</button>
+        </div>
+
+        <div class="form-group">
+            <input id="newConversationSearch"
+                placeholder="Rechercher un utilisateur...">
+        </div>
+
+        <div id="newConversationResults"></div>
+    </div>
+</div>
+
+<!-- GESTION ADMINISTRATEURS -->
+
+<div class="modal" id="adminManagementModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Administrateurs VYRO</h2>
+            <button class="close-button" onclick="closeModal('adminManagementModal')">×</button>
+        </div>
+
+        <div id="adminList"></div>
+
+        <button class="primary-button" onclick="openAddAdmin()">
+            Ajouter un administrateur secondaire
+        </button>
+    </div>
+</div>
+
+<div class="modal" id="addAdminModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Ajouter un administrateur</h2>
+            <button class="close-button" onclick="closeModal('addAdminModal')">×</button>
+        </div>
+
+        <div class="form-group">
+            <label>Email du compte</label>
+            <input id="newAdminEmail" type="email">
+        </div>
+
+        <button class="primary-button" onclick="addSecondaryAdmin()">
+            Ajouter
+        </button>
+    </div>
+</div>
+
+<!-- MODÉRATION -->
+
+<div class="modal" id="moderationModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Modération</h2>
+            <button class="close-button" onclick="closeModal('moderationModal')">×</button>
+        </div>
+
+        <div id="reportsList"></div>
+    </div>
+</div>
+
+<div class="modal" id="reportDetailsModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Signalement</h2>
+            <button class="close-button" onclick="closeModal('reportDetailsModal')">×</button>
+        </div>
+
+        <div id="reportDetails"></div>
+    </div>
+</div>
+
+<!-- MESSAGE TOAST -->
+
+<div class="toast" id="vyroToast"></div>
+
+<!-- STYLES DE LA DISCUSSION -->
+
+<style>
+
+.official-chat {
+    padding: 0;
+    height: 88vh;
+    max-height: 800px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 20px;
+}
+
+.official-chat-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    background: #17111f;
+    border-bottom: 1px solid var(--border);
+}
+
+.official-chat-header .close-button {
+    font-size: 25px;
+    flex-shrink: 0;
+}
+
+.official-avatar {
+    width: 43px;
+    height: 43px;
+    border-radius: 50%;
+    background: linear-gradient(135deg,#75449a,#b49acb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.official-header-info {
+    flex: 1;
+}
+
+.official-header-name {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.official-status {
+    font-size: 11px;
+    color: var(--success);
+    margin-top: 5px;
+}
+
+.official-chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background:
+        radial-gradient(circle at top,rgba(117,68,154,.08),transparent 55%),
+        #0b0910;
+}
+
+.official-empty {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+    width: 80%;
+    pointer-events: none;
+}
+
+.empty-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    margin: auto auto 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--surface3);
+    color: var(--primary-light);
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.official-empty h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+}
+
+.official-empty p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.official-message {
+    max-width: 85%;
+    align-self: flex-start;
+    background: #21172c;
+    padding: 11px 13px;
+    border-radius: 5px 15px 15px 15px;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.official-message .message-sender {
+    color: var(--primary-light);
+    font-weight: bold;
+    font-size: 11px;
+    margin-bottom: 5px;
+}
+
+.official-message .message-time {
+    text-align: right;
+    color: var(--muted);
+    font-size: 10px;
+    margin-top: 6px;
+}
+
+.official-readonly {
+    padding: 12px;
+    text-align: center;
+    color: var(--muted);
+    background: #100d16;
+    font-size: 11px;
+    border-top: 1px solid var(--border);
+}
+
+.official-composer {
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: #17111f;
+    border-top: 1px solid var(--border);
+}
+
+.official-composer textarea {
+    flex: 1;
+    resize: none;
+    max-height: 100px;
+    background: #0b0910;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 12px 15px;
+    color: white;
+    outline: none;
+}
+
+.official-composer button {
+    width: 43px;
+    height: 43px;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 18px;
+}
+/* VYRO — MESSAGERIE PLEIN ÉCRAN */
+
+#officialChatModal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+    z-index: 99999 !important;
+}
+
+#officialChatModal > div {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+#officialMessages {
+    flex: 1 !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+}
+
+#officialAdminComposer {
+    flex-shrink: 0 !important;
+  }
+  
+</style>
+
+<!-- FIN PARTIE 2/3 -->
+
+<!-- LA PARTIE 3/3 SERA COLLÉE ICI -->
+  <script type="module">
+
+import { createClient } from
+"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+/* =================================
+   CONFIGURATION SUPABASE
+================================= */
+
+const SUPABASE_URL =
+"https://baudgidnnyjgfnepbiyn.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_R8oJ3O_avypAbwyATrcreQ_pt47CUb7";
+
+const supabase = createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+    // ======================================
+// VYRO — SYSTÈME DE PRÉSENCE
+// ======================================
+
+let vyroPresenceTimer = null;
+let vyroCurrentUser = null;
+
+const VYRO_HEARTBEAT_INTERVAL = 15000;
+const VYRO_ONLINE_LIMIT = 45000;
+
+
+// RÉCUPÉRER L'UTILISATEUR CONNECTÉ
+async function vyroStartPresence() {
+
+    const { data, error } = await supabase.auth.getUser();
+
+    if (error || !data.user) {
+        console.log("Utilisateur non connecté.");
+        return;
+    }
+
+    vyroCurrentUser = data.user;
+
+    await vyroUpdatePresence();
+
+    if (vyroPresenceTimer) {
+        clearInterval(vyroPresenceTimer);
+    }
+
+    vyroPresenceTimer = setInterval(() => {
+        if (document.visibilityState === "visible") {
+            vyroUpdatePresence();
+        }
+    }, VYRO_HEARTBEAT_INTERVAL);
+}
+
+
+// ENREGISTRER LA DERNIÈRE ACTIVITÉ
+async function vyroUpdatePresence() {
+
+    if (!vyroCurrentUser) return;
+
+    const { error } = await supabase
+        .from("vyro_user_presence")
+        .upsert({
+            user_id: vyroCurrentUser.id,
+            last_seen: new Date().toISOString(),
+            updated_at: new Date().toISOString()
+        }, {
+            onConflict: "user_id"
+        });
+
+    if (error) {
+        console.error("Erreur présence :", error.message);
+    }
+}
+
+
+// RÉCUPÉRER LE STATUT D'UN UTILISATEUR
+async function vyroGetPresence(userId) {
+
+    const { data, error } = await supabase
+        .from("vyro_user_presence")
+        .select("last_seen")
+        .eq("user_id", userId)
+        .maybeSingle();
+
+    if (error || !data) {
+        return {
+            online: false,
+            text: "Statut indisponible"
+        };
+    }
+
+    const lastSeen = new Date(data.last_seen);
+    const elapsed = Date.now() - lastSeen.getTime();
+
+    if (elapsed < VYRO_ONLINE_LIMIT) {
+        return {
+            online: true,
+            text: "En ligne"
+        };
+    }
+
+    return {
+        online: false,
+        text: "Déconnecté à " +
+            lastSeen.toLocaleTimeString("fr-FR", {
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit"
+            })
+    };
+}
+
+
+// CALCULER LE TEMPS ÉCOULÉ
+function vyroTimeSince(date) {
+
+    const seconds = Math.floor(
+        (Date.now() - new Date(date).getTime()) / 1000
+    );
+
+    if (seconds < 60) {
+        return `Il y a ${seconds} seconde(s)`;
+    }
+
+    const minutes = Math.floor(seconds / 60);
+
+    if (minutes < 60) {
+        return `Il y a ${minutes} minute(s)`;
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    if (hours < 24) {
+        return `Il y a ${hours} heure(s)`;
+    }
+
+    const days = Math.floor(hours / 24);
+
+    return `Il y a ${days} jour(s)`;
+}
+
+
+// SIGNALER UNE ACTIVITÉ À LA REPRISE
+document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+        vyroUpdatePresence();
+    }
+});
+
+
+// DERNIÈRE TENTATIVE D'ACTUALISATION À LA FERMETURE
+window.addEventListener("pagehide", () => {
+    vyroUpdatePresence();
+});
+
+
+// DÉMARRER LE SYSTÈME
+vyroStartPresence();
+
+let currentUser = null;
+let currentProfile = null;
+let isAdmin = false;
+let isPrimaryAdmin = false;
+let officialSubscription = null;
+
+/* =================================
+   INITIALISATION
+================================= */
+
+async function initializeVYRO() {
+
+    const { data, error } =
+        await supabase.auth.getSession();
+
+    if (error || !data.session) {
+        window.location.href = "connexion.html";
+        return;
+    }
+
+    currentUser = data.session.user;
+
+    await loadProfile();
+    await loadAdminStatus();
+    await loadOfficialMessages();
+    subscribeOfficialMessages();
+
+}
+
+/* =================================
+   PROFIL
+================================= */
+
+async function loadProfile() {
+
+    const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("id", currentUser.id)
+        .maybeSingle();
+
+    if (error) {
+        console.warn("Profil non chargé :", error.message);
+    }
+
+    currentProfile = data || {};
+
+    const username =
+        currentProfile.username ||
+        currentUser.user_metadata?.username ||
+        currentUser.email?.split("@")[0] ||
+        "Utilisateur";
+
+    const avatar =
+        currentProfile.avatar_url ||
+        currentUser.user_metadata?.avatar_url ||
+        "";
+
+    const profileContent =
+        document.getElementById("profileContent");
+
+    if (profileContent) {
+        profileContent.innerHTML = `
+            <div style="text-align:center;padding:15px">
+                <div style="
+                    width:75px;height:75px;
+                    border-radius:50%;
+                    background:#75449a;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    margin:auto;
+                    overflow:hidden;
+                    font-size:25px;">
+                    ${
+                        avatar
+                        ? `<img src="${escapeHTML(avatar)}"
+                            style="width:100%;height:100%;object-fit:cover">`
+                        : "V"
+                    }
+                </div>
+
+                <h3 style="margin-top:12px">
+                    ${escapeHTML(username)}
+                </h3>
+
+                <p style="color:#9990a5;font-size:12px">
+                    ${escapeHTML(currentUser.email || "")}
+                </p>
+            </div>
+        `;
+    }
+
+    const usernameInput =
+        document.getElementById("editUsername");
+
+    const avatarInput =
+        document.getElementById("editAvatar");
+
+    if (usernameInput) usernameInput.value = username;
+    if (avatarInput) avatarInput.value = avatar;
+
+}
+
+/* =================================
+   RÔLES ADMINISTRATEURS
+================================= */
+
+async function loadAdminStatus() {
+
+    const { data, error } = await supabase
+        .from("vyro_admins")
+        .select("role")
+        .eq("user_id", currentUser.id)
+        .maybeSingle();
+
+    if (error) {
+        console.warn("Vérification admin :", error.message);
+        return;
+    }
+
+    isAdmin = !!data;
+    isPrimaryAdmin = data?.role === "principal";
+
+    const composer =
+        document.getElementById("officialAdminComposer");
+
+    const notice =
+        document.getElementById("officialReadOnlyNotice");
+
+    if (composer) {
+        composer.style.display =
+            isAdmin ? "flex" : "none";
+    }
+
+    if (notice) {
+        notice.style.display =
+            isAdmin ? "none" : "block";
+    }
+
+}
+
+/* =================================
+   OUVRIR DISCUSSION OFFICIELLE
+================================= */
+
+window.openOfficialChat = async function() {
+
+    document
+        .getElementById("officialChatModal")
+        .classList.add("show");
+
+    await loadOfficialMessages();
+
+};
+
+window.closeOfficialChat = function() {
+
+    document
+        .getElementById("officialChatModal")
+        .classList.remove("show");
+
+};
+
+/* =================================
+   CHARGER LES MESSAGES
+================================= */
+
+async function loadOfficialMessages() {
+
+    const container =
+        document.getElementById("officialMessages");
+
+    const empty =
+        document.getElementById("officialEmpty");
+
+    if (!container) return;
+
+    const { data, error } = await supabase
+        .from("vyro_official_chat_messages")
+        .select("*")
+        .order("created_at", { ascending: true });
+
+    if (error) {
+        showToast("Impossible de charger les messages.");
+        console.error(error);
+        return;
+    }
+
+    container.innerHTML = "";
+
+    if (!data || data.length === 0) {
+
+        if (empty) empty.style.display = "block";
+
+        document.getElementById("officialPreview").textContent =
+            "Aucun message pour le moment";
+
+        return;
+    }
+
+    if (empty) empty.style.display = "none";
+
+    data.forEach(message => {
+
+        const bubble = document.createElement("div");
+        bubble.className = "official-message";
+
+        const sender = document.createElement("div");
+        sender.className = "message-sender";
+        sender.textContent = message.sender_name || "Administrateur";
+
+        const content = document.createElement("div");
+        content.textContent = message.content;
+
+        const time = document.createElement("div");
+        time.className = "message-time";
+
+        time.textContent = new Date(
+            message.created_at
+        ).toLocaleTimeString("fr-FR", {
+            hour: "2-digit",
+            minute: "2-digit"
+        });
+
+        bubble.append(sender, content, time);
+        container.appendChild(bubble);
+
+    });
+
+    container.scrollTop = container.scrollHeight;
+
+    const lastMessage = data[data.length - 1];
+
+    document.getElementById("officialPreview").textContent =
+        lastMessage.content;
+
+}
+
+/* =================================
+   ENVOYER UN MESSAGE
+================================= */
+
+window.publishOfficialMessage = async function() {
+
+    if (!currentUser || !isAdmin) {
+        showToast("Tu n'as pas la permission d'écrire.");
+        return;
+    }
+
+    const input =
+        document.getElementById("officialMessageInput");
+
+    const content = input.value.trim();
+
+    if (!content) {
+        showToast("Écris un message avant d'envoyer.");
+        return;
+    }
+
+    const senderName =
+        currentProfile?.username ||
+        currentUser.user_metadata?.username ||
+        "Administrateur";
+
+    const button =
+        document.getElementById("sendOfficialMessage");
+
+    button.disabled = true;
+
+    const { error } = await supabase
+        .from("vyro_official_chat_messages")
+        .insert({
+            sender_id: currentUser.id,
+            sender_name: senderName,
+            content: content
+        });
+
+    button.disabled = false;
+
+    if (error) {
+        console.error(error);
+        showToast("Erreur lors de l'envoi.");
+        return;
+    }
+
+    input.value = "";
+
+    await loadOfficialMessages();
+
+    showToast("Message envoyé !");
+
+};
+
+/* =================================
+   MISE À JOUR EN TEMPS RÉEL
+================================= */
+
+function subscribeOfficialMessages() {
+
+    if (officialSubscription) {
+        supabase.removeChannel(officialSubscription);
+    }
+
+    officialSubscription = supabase
+        .channel("vyro-official-chat")
+        .on(
+            "postgres_changes",
+            {
+                event: "*",
+                schema: "public",
+                table: "vyro_official_chat_messages"
+            },
+            () => loadOfficialMessages()
+        )
+        .subscribe();
+
+}
+
+/* =================================
+   PARAMÈTRES ET MODALES
+================================= */
+
+window.openSettings = function() {
+    openModal("settingsModal");
+};
+
+window.openNotifications = function() {
+    openModal("notificationsModal");
+};
+
+window.openProfile = function() {
+    openModal("profileModal");
+};
+
+window.openEditProfile = function() {
+    closeModal("profileModal");
+    openModal("editProfileModal");
+};
+
+window.openNewConversation = function() {
+    openModal("newConversationModal");
+};
+
+window.openAddAdmin = function() {
+
+    if (!isPrimaryAdmin) {
+        showToast("Réservé à l'administrateur principal.");
+        return;
+    }
+
+    openModal("addAdminModal");
+
+};
+
+window.showOfficialInfo = function() {
+    showToast("Compte officiel VYRO");
+};
+
+function openModal(id) {
+    document.getElementById(id)?.classList.add("show");
+}
+
+window.closeModal = function(id) {
+    document.getElementById(id)?.classList.remove("show");
+};
+
+/* =================================
+   FILTRES
+================================= */
+
+window.filterConversations = function(type, button) {
+
+    document.querySelectorAll(".filter-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    button.classList.add("active");
+
+    if (type !== "all") {
+        showToast("Ce filtre sera activé avec les conversations.");
+    }
+
+};
+
+/* =================================
+   RECHERCHE
+================================= */
+
+document
+    .getElementById("conversationSearch")
+    ?.addEventListener("input", function() {
+
+        const search = this.value.toLowerCase();
+
+        document.querySelectorAll(".conversation")
+            .forEach(item => {
+
+                item.style.display =
+                    item.textContent.toLowerCase().includes(search)
+                    ? "flex"
+                    : "none";
+
+            });
+
+    });
+
+/* =================================
+   SAUVEGARDER LE PROFIL
+================================= */
+
+window.saveProfile = async function() {
+
+    const username =
+        document.getElementById("editUsername").value.trim();
+
+    const avatar =
+        document.getElementById("editAvatar").value.trim();
+
+    if (!username) {
+        showToast("Le nom est obligatoire.");
+        return;
+    }
+
+    const { error } = await supabase.auth.updateUser({
+        data: {
+            username: username,
+            avatar_url: avatar
+        }
+    });
+
+    if (error) {
+        showToast("Impossible de modifier le profil.");
+        console.error(error);
+        return;
+    }
+
+    await loadProfile();
+
+    closeModal("editProfileModal");
+
+    showToast("Profil mis à jour !");
+
+};
+
+/* =================================
+   AJOUT ADMIN
+================================= */
+
+window.addSecondaryAdmin = async function() {
+
+    if (!isPrimaryAdmin) {
+        showToast("Permission refusée.");
+        return;
+    }
+
+    showToast(
+        "L'ajout sécurisé nécessite une fonction serveur Supabase."
+    );
+
+};
+
+/* =================================
+   DÉCONNEXION
+================================= */
+
+window.logout = async function() {
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+        showToast("Erreur de déconnexion.");
+        return;
+    }
+
+    window.location.href = "connexion.html";
+
+};
+
+/* =================================
+   UTILITAIRES
+================================= */
+
+function showToast(message) {
+
+    const toast =
+        document.getElementById("vyroToast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 3000);
+
+}
+
+function escapeHTML(value) {
+
+    return String(value).replace(/[&<>"']/g, char => ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+    })[char]);
+
+}
+
+/* =================================
+   DÉMARRAGE
+================================= */
+
+initializeVYRO();
+
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .then(() => {
+        console.log("VYRO : Service Worker activé !");
+      })
+      .catch(error => {
+        console.error("Erreur Service Worker :", error);
+      });
+  });
+}
+</script>
+  
+</body>
+</html>

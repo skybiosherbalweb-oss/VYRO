@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08070d">
+
+<title>VYRO — Paramètres</title>
+
+<style>
+
+/* =========================
+   BASE
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #08070d;
+    --surface: #100d16;
+    --surface-light: #17111f;
+    --purple: #75449a;
+    --purple-light: #b49acb;
+    --text: #f3edf8;
+    --muted: #95869f;
+    --border: rgba(150,115,175,.13);
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 35px;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 20px 16px;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: var(--purple-light);
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+/* =========================
+   PROFILE CARD
+========================= */
+
+.profile-card {
+    background: linear-gradient(
+        135deg,
+        #21152e,
+        #120e19
+    );
+
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 20px;
+    margin-bottom: 28px;
+}
+
+.profile-top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        #75449a,
+        #b49acb
+    );
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.profile-info h3 {
+    font-size: 17px;
+}
+
+.profile-info p {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.badge {
+    color: #c69aff;
+}
+
+.profile-description {
+    color: var(--muted);
+    font-size: 12px;
+    margin-top: 17px;
+    line-height: 1.5;
+}
+
+.profile-button {
+    width: 100%;
+    margin-top: 17px;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: rgba(180,154,203,.13);
+    color: var(--purple-light);
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section {
+    margin-bottom: 27px;
+}
+
+.section-title {
+    font-size: 13px;
+    color: var(--purple-light);
+    margin-bottom: 12px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.settings-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    overflow: hidden;
+}
+
+.setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+}
+
+.setting:last-child {
+    border-bottom: none;
+}
+
+.setting-left {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 11px;
+    background: var(--surface-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+}
+
+.setting-text h4 {
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.setting-text p {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 5px;
+}
+
+.arrow {
+    color: var(--muted);
+    font-size: 20px;
+}
+
+/* =========================
+   SWITCHES
+========================= */
+
+.switch {
+    position: relative;
+    width: 43px;
+    height: 24px;
+    flex-shrink: 0;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    inset: 0;
+    background: #39313f;
+    border-radius: 30px;
+    transition: .3s;
+}
+
+.slider::before {
+    content: "";
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    border-radius: 50%;
+    transition: .3s;
+}
+
+.switch input:checked + .slider {
+    background: var(--purple);
+}
+
+.switch input:checked + .slider::before {
+    transform: translateX(19px);
+}
+
+/* =========================
+   SELECT
+========================= */
+
+select {
+    background: var(--surface-light);
+    color: var(--purple-light);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 9px;
+    font-size: 12px;
+    outline: none;
+}
+
+/* =========================
+   THEME BUTTONS
+========================= */
+
+.theme-options {
+    display: flex;
+    gap: 10px;
+    padding: 15px;
+}
+
+.theme-option {
+    flex: 1;
+    padding: 13px 8px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 12px;
+}
+
+.theme-option.active {
+    border-color: var(--purple-light);
+    background: rgba(117,68,154,.2);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    text-align: center;
+    padding: 25px 10px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.8;
+}
+
+.footer strong {
+    color: var(--purple-light);
+    letter-spacing: 2px;
+}
+
+/* =========================
+   LIGHT THEME
+========================= */
+
+body.light {
+    --bg: #f3eff7;
+    --surface: #ffffff;
+    --surface-light: #eee7f4;
+    --text: #241b2c;
+    --muted: #796d82;
+    --border: rgba(90,50,120,.15);
+}
+
+body.light .profile-card {
+    background: linear-gradient(135deg,#e8d9f4,#ffffff);
+}
+
+body.light .setting {
+    border-color: var(--border);
+}
+
+body.light .slider::before {
+    background: white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <header class="header">
+
+        <div>
+            <div class="logo">VYRO</div>
+            <div class="subtitle">
+                Centre de contrôle
+            </div>
+        </div>
+
+    </header>
+
+
+    <!-- PROFILE CARD -->
+
+    <div class="profile-card">
+
+        <div class="profile-top">
+
+            <div class="avatar">V</div>
+
+            <div class="profile-info">
+
+                <h3>
+                    Mon compte
+                    <span class="badge">✓</span>
+                </h3>
+
+                <p>@vyro_officiel</p>
+
+            </div>
+
+        </div>
+
+        <p class="profile-description">
+            Chaque connexion ouvre un nouvel univers.
+        </p>
+
+        <button
+            class="profile-button"
+            onclick="aller('profil.html')">
+
+            Modifier mon profil
+
+        </button>
+
+    </div>
+
+
+    <!-- MON COMPTE -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            Mon compte
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="setting"
+                 onclick="alerte('Informations personnelles')">
+
+                <div class="setting-left">
+
+                    <div class="icon">👤</div>
+
+                    <div class="setting-text">
+                        <h4>Informations personnelles</h4>
+                        <p>Gérer mes informations</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+
+            <div class="setting"
+                 onclick="alerte('Adresse e-mail')">
+
+                <div class="setting-left">
+
+                    <div class="icon">✉️</div>
+
+                    <div class="setting-text">
+                        <h4>Adresse e-mail</h4>
+                        <p>Gérer mon adresse e-mail</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+
+            <div class="setting"
+                 onclick="deconnexion()">
+
+                <div class="setting-left">
+
+                    <div class="icon">🚪</div>
+
+                    <div class="setting-text">
+                        <h4>Se déconnecter</h4>
+                        <p>Quitter mon compte VYRO</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CONFIDENTIALITE -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            Confidentialité et sécurité
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="setting"
+                 onclick="alerte('Confidentialité du profil')">
+
+                <div class="setting-left">
+
+                    <div class="icon">🔒</div>
+
+                    <div class="setting-text">
+                        <h4>Qui peut voir mon profil ?</h4>
+                        <p>Contrôler la visibilité du profil</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+
+            <div class="setting"
+                 onclick="alerte('Autorisations de messages')">
+
+                <div class="setting-left">
+
+                    <div class="icon">💬</div>
+
+                    <div class="setting-text">
+                        <h4>Qui peut m'envoyer des messages ?</h4>
+                        <p>Gérer les autorisations</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+
+            <div class="setting"
+                 onclick="alerte('Modification du mot de passe')">
+
+                <div class="setting-left">
+
+                    <div class="icon">🛡️</div>
+
+                    <div class="setting-text">
+                        <h4>Modifier mon mot de passe</h4>
+                        <p>Sécuriser mon compte</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- NOTIFICATIONS -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            Notifications
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="setting">
+
+                <div class="setting-left">
+
+                    <div class="icon">🔔</div>
+
+                    <div class="setting-text">
+                        <h4>Notifications générales</h4>
+                        <p>Recevoir les notifications</p>
+                    </div>
+
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox"
+                           id="notifGeneral"
+                           checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div class="setting-left">
+
+                    <div class="icon">💬</div>
+
+                    <div class="setting-text">
+                        <h4>Messages</h4>
+                        <p>Nouveaux messages</p>
+                    </div>
+
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox"
+                           id="notifMessages"
+                           checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div class="setting-left">
+
+                    <div class="icon">👥</div>
+
+                    <div class="setting-text">
+                        <h4>Communautés</h4>
+                        <p>Activité des communautés</p>
+                    </div>
+
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox"
+                           id="notifCommunautes"
+                           checked>
+                    <span class="slider"></span>
+                </label>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- APPARENCE -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            Apparence
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="theme-options">
+
+                <button
+                    class="theme-option active"
+                    id="darkButton"
+                    onclick="changerTheme('dark')">
+
+                    🌙 Sombre
+
+                </button>
+
+                <button
+                    class="theme-option"
+                    id="lightButton"
+                    onclick="changerTheme('light')">
+
+                    ☀️ Clair
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- LANGUE -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            Langue
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="setting">
+
+                <div class="setting-left">
+
+                    <div class="icon">🌍</div>
+
+                    <div class="setting-text">
+                        <h4>Langue de l'application</h4>
+                        <p>Choisir une langue</p>
+                    </div>
+
+                </div>
+
+                <select id="langue"
+                        onchange="changerLangue()">
+
+                    <option value="fr">Français</option>
+                    <option value="en">English</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- A PROPOS -->
+
+    <section class="section">
+
+        <h3 class="section-title">
+            À propos de VYRO
+        </h3>
+
+        <div class="settings-box">
+
+            <div class="setting"
+                 onclick="alerte('Bienvenue sur VYRO')">
+
+                <div class="setting-left">
+
+                    <div class="icon">✨</div>
+
+                    <div class="setting-text">
+                        <h4>À propos de VYRO</h4>
+                        <p>Découvrir notre univers</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+
+            <div class="setting">
+
+                <div class="setting-left">
+
+                    <div class="icon">📱</div>
+
+                    <div class="setting-text">
+                        <h4>Version</h4>
+                        <p>VYRO v1.0.0</p>
+                    </div>
+
+                </div>
+
+                <span class="arrow">›</span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- FOOTER -->
+
+    <footer class="footer">
+
+        <strong>VYRO</strong>
+
+        <p>
+            Chaque connexion ouvre un nouvel univers.
+        </p>
+
+        <p>
+            Version 1.0.0
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script>
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function aller(page) {
+    window.location.href = page;
+}
+
+
+/* =========================
+   ALERTES
+========================= */
+
+function alerte(message) {
+    alert(
+        message +
+        " : cette fonctionnalité sera connectée prochainement."
+    );
+}
+
+
+/* =========================
+   DECONNEXION
+========================= */
+
+function deconnexion() {
+
+    const confirmation = confirm(
+        "Voulez-vous vraiment vous déconnecter ?"
+    );
+
+    if (confirmation) {
+
+        alert(
+            "La déconnexion sera connectée à Supabase."
+        );
+
+    }
+
+}
+
+
+/* =========================
+   THEME
+========================= */
+
+function changerTheme(theme) {
+
+    document.body.classList.toggle(
+        "light",
+        theme === "light"
+    );
+
+    localStorage.setItem(
+        "vyro_theme",
+        theme
+    );
+
+    document.getElementById("darkButton")
+        .classList.toggle(
+            "active",
+            theme === "dark"
+        );
+
+    document.getElementById("lightButton")
+        .classList.toggle(
+            "active",
+            theme === "light"
+        );
+
+}
+
+
+/* =========================
+   CHARGEMENT DU THEME
+========================= */
+
+const themeEnregistre =
+    localStorage.getItem("vyro_theme") || "dark";
+
+changerTheme(themeEnregistre);
+
+
+/* =========================
+   NOTIFICATIONS
+========================= */
+
+const notifications = [
+    "notifGeneral",
+    "notifMessages",
+    "notifCommunautes"
+];
+
+notifications.forEach(id => {
+
+    const element = document.getElementById(id);
+
+    const valeur =
+        localStorage.getItem("vyro_" + id);
+
+    if (valeur !== null) {
+        element.checked = valeur === "true";
+    }
+
+    element.addEventListener("change", function() {
+
+        localStorage.setItem(
+            "vyro_" + id,
+            this.checked
+        );
+
+    });
+
+});
+
+
+/* =========================
+   LANGUE
+========================= */
+
+const langue = document.getElementById("langue");
+
+langue.value =
+    localStorage.getItem("vyro_langue") || "fr";
+
+function changerLangue() {
+
+    localStorage.setItem(
+        "vyro_langue",
+        langue.value
+    );
+
+    alert(
+        "Langue enregistrée. La traduction complète sera ajoutée prochainement."
+    );
+
+}
+
+</script>
+
+</body>
+</html>

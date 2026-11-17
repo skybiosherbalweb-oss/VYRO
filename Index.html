@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090914">
+
+<title>VYRO</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #090914;
+    color: white;
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.splash {
+    text-align: center;
+    animation: appear 1s ease;
+}
+
+.logo {
+    font-size: 55px;
+    font-weight: 900;
+    letter-spacing: 7px;
+    color: #ad8aff;
+    text-shadow: 0 0 25px #8d60ff80;
+    animation: glow 2s infinite alternate;
+}
+
+.slogan {
+    color: #aaa4bd;
+    font-size: 13px;
+    letter-spacing: 2px;
+    margin-top: 12px;
+}
+
+.language-box {
+    margin-top: 35px;
+}
+
+.language-title {
+    color: #aaa4bd;
+    font-size: 12px;
+    margin-bottom: 12px;
+}
+
+.languages {
+    display: flex;
+    justify-content: center;
+    gap: 9px;
+}
+
+.languages button {
+    background: #151326;
+    border: 1px solid #302747;
+    color: white;
+    padding: 11px 13px;
+    border-radius: 12px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.languages button.active {
+    border-color: #ad8aff;
+    background: #2a2045;
+    color: #c9adff;
+}
+
+.continue {
+    margin-top: 20px;
+    background: #ad8aff;
+    color: #090914;
+    border: none;
+    padding: 13px 35px;
+    border-radius: 12px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.continue:disabled {
+    opacity: 0.6;
+}
+
+.loader {
+    width: 30px;
+    height: 30px;
+    border: 3px solid #302747;
+    border-top: 3px solid #ad8aff;
+    border-radius: 50%;
+    margin: 25px auto 0;
+    animation: spin 0.8s linear infinite;
+}
+
+.loading-text {
+    color: #8f88a5;
+    font-size: 11px;
+    margin-top: 12px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 35px;
+    color: #555269;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #8d60ff40; }
+    to { text-shadow: 0 0 35px #ad8aff; }
+}
+
+@keyframes appear {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="splash">
+
+    <div class="logo">VYRO</div>
+
+    <p class="slogan">Connect without limits.</p>
+
+    <div class="language-box" id="languageBox" hidden>
+
+        <p class="language-title" id="languageTitle">
+            CHOISISSEZ VOTRE LANGUE
+        </p>
+
+        <div class="languages">
+
+            <button onclick="choisirLangue('fr')" id="fr">
+                🇫🇷 FR
+            </button>
+
+            <button onclick="choisirLangue('en')" id="en">
+                🇬🇧 EN
+            </button>
+
+            <button onclick="choisirLangue('ja')" id="ja">
+                🇯🇵 日本語
+            </button>
+
+        </div>
+
+    </div>
+
+    <button class="continue" id="continueButton"
+    onclick="demarrerVYRO()" hidden>
+        CONTINUER
+    </button>
+
+    <div class="loader" id="loader"></div>
+
+    <p class="loading-text" id="loadingText">
+        INITIALISATION...
+    </p>
+
+</div>
+
+<div class="footer">
+    CRÉÉ EN CÔTE D'IVOIRE 🇨🇮
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const SUPABASE_URL =
+"https://baudgidnnyjgfnepbiyn.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_R8oJ3O_avypAbwyATrcreQ_pt47CUb7";
+
+const supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+);
+
+const traductions = {
+
+    fr: {
+        titre: "CHOISISSEZ VOTRE LANGUE",
+        continuer: "CONTINUER",
+        chargement: "INITIALISATION..."
+    },
+
+    en: {
+        titre: "CHOOSE YOUR LANGUAGE",
+        continuer: "CONTINUE",
+        chargement: "INITIALIZING..."
+    },
+
+    ja: {
+        titre: "言語を選択してください",
+        continuer: "続ける",
+        chargement: "初期化中..."
+    }
+
+};
+
+let langue =
+localStorage.getItem("vyro_language") || "fr";
+
+
+function afficherLangue() {
+
+    document.documentElement.lang = langue;
+
+    document.getElementById("languageTitle").textContent =
+    traductions[langue].titre;
+
+    document.getElementById("continueButton").textContent =
+    traductions[langue].continuer;
+
+    document.getElementById("loadingText").textContent =
+    traductions[langue].chargement;
+
+    document.querySelectorAll(".languages button").forEach(
+        bouton => bouton.classList.remove("active")
+    );
+
+    document.getElementById(langue).classList.add("active");
+
+}
+
+
+function choisirLangue(nouvelleLangue) {
+
+    langue = nouvelleLangue;
+
+    localStorage.setItem("vyro_language", langue);
+
+    afficherLangue();
+
+}
+
+
+function afficherEcranLangue() {
+
+    document.getElementById("loader").style.display = "none";
+
+    document.getElementById("loadingText").style.display = "none";
+
+    document.getElementById("languageBox").hidden = false;
+
+    document.getElementById("continueButton").hidden = false;
+
+    afficherLangue();
+
+}
+
+
+async function verifierConnexion() {
+
+    try {
+
+        const { data, error } =
+        await supabaseClient.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+
+            window.location.replace("accueil.html");
+
+            return;
+
+        }
+
+        afficherEcranLangue();
+
+    } catch (error) {
+
+        console.error(error);
+
+        afficherEcranLangue();
+
+    }
+
+}
+
+
+async function demarrerVYRO() {
+
+    const bouton =
+    document.getElementById("continueButton");
+
+    bouton.disabled = true;
+
+    try {
+
+        const { data, error } =
+        await supabaseClient.auth.getSession();
+
+        if (error) throw error;
+
+        if (data.session) {
+
+            window.location.replace("accueil.html");
+
+        } else {
+
+            window.location.replace("connexion.html");
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        window.location.replace("connexion.html");
+
+    }
+
+}
+
+
+verifierConnexion();
+
+</script>
+
+</body>
+</html>

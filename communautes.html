@@ -1,0 +1,2112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#08070d">
+
+<title>VYRO — Communautés</title>
+
+<script>
+const savedTheme = localStorage.getItem("vyro_theme") || "dark";
+document.documentElement.setAttribute("data-theme", savedTheme);
+</script>
+
+<style>
+:root {
+    --bg: #08070d;
+    --surface: #100d16;
+    --surface-light: #17111f;
+    --border: rgba(180,154,203,.15);
+    --primary: #75449a;
+    --primary-light: #b49acb;
+    --text: #f3edf8;
+    --muted: #95869f;
+    --card: #110e18;
+    --shadow: 0 12px 35px rgba(0,0,0,.25);
+}
+
+[data-theme="light"] {
+    --bg: #f7f4fa;
+    --surface: #ffffff;
+    --surface-light: #f0eaf6;
+    --border: rgba(91,54,117,.14);
+    --primary: #75449a;
+    --primary-light: #75449a;
+    --text: #24182d;
+    --muted: #81748b;
+    --card: #ffffff;
+    --shadow: 0 12px 35px rgba(70,40,90,.08);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 100px;
+    transition: .25s;
+}
+
+button, input {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+.app-shell {
+    max-width: 1100px;
+    margin: auto;
+    padding: 18px;
+}
+
+/* HEADER */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand-icon {
+    width: 43px;
+    height: 43px;
+    display: grid;
+    place-items: center;
+    border-radius: 15px;
+    background: linear-gradient(135deg,#75449a,#b49acb);
+    font-size: 23px;
+    box-shadow: 0 5px 20px rgba(117,68,154,.3);
+}
+
+.brand-name {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: 1px;
+}
+
+.brand-name span {
+    color: var(--primary-light);
+}
+
+.header-actions {
+    display: flex;
+    gap: 9px;
+}
+
+.icon-button {
+    width: 42px;
+    height: 42px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 19px;
+}
+
+/* HERO */
+
+.community-hero {
+    position: relative;
+    overflow: hidden;
+    padding: 27px 23px;
+    border: 1px solid rgba(180,154,203,.18);
+    border-radius: 25px;
+    background:
+        radial-gradient(circle at 90% 10%,rgba(180,154,203,.23),transparent 35%),
+        linear-gradient(135deg,#21142e,#100d18 70%);
+    margin-bottom: 25px;
+    box-shadow: var(--shadow);
+}
+
+[data-theme="light"] .community-hero {
+    background:
+        radial-gradient(circle at 90% 10%,rgba(180,154,203,.3),transparent 35%),
+        linear-gradient(135deg,#e9dcf3,#ffffff 75%);
+}
+
+.hero-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 12px;
+    border-radius: 30px;
+    background: rgba(180,154,203,.13);
+    color: var(--primary-light);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    margin-bottom: 15px;
+}
+
+.community-hero h1 {
+    font-size: clamp(25px,5vw,36px);
+    line-height: 1.2;
+    margin-bottom: 11px;
+    max-width: 520px;
+}
+
+.community-hero h1 span {
+    color: var(--primary-light);
+}
+
+.community-hero p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.6;
+    max-width: 470px;
+}
+
+.hero-bottom {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 22px;
+}
+
+.create-community-btn {
+    border: none;
+    border-radius: 13px;
+    padding: 13px 17px;
+    color: white;
+    font-weight: bold;
+    background: linear-gradient(135deg,#75449a,#9868ba);
+    box-shadow: 0 7px 20px rgba(117,68,154,.25);
+}
+
+.create-community-btn:active {
+    transform: scale(.97);
+}
+
+/* SECTION TITLE */
+
+.section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 27px 0 16px;
+}
+
+.section-heading h2 {
+    font-size: 19px;
+}
+
+.section-heading small {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* TABS */
+
+.community-tabs {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    margin-bottom: 16px;
+}
+
+.community-tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.community-tab {
+    flex-shrink: 0;
+    padding: 11px 17px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.community-tab.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
+/* SEARCH */
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    background: var(--surface);
+    margin-bottom: 20px;
+}
+
+.search-box span {
+    font-size: 18px;
+}
+
+.search-box input {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+}
+
+.search-box input::placeholder {
+    color: var(--muted);
+}
+
+/* CATEGORIES */
+
+.category-list {
+    display: flex;
+    gap: 9px;
+    overflow-x: auto;
+    padding-bottom: 7px;
+    scrollbar-width: none;
+}
+
+.category-list::-webkit-scrollbar {
+    display: none;
+}
+
+.category-chip {
+    flex-shrink: 0;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 12px;
+}
+
+/* COMMUNITY GRID */
+
+.community-grid {
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 15px;
+    margin-top: 17px;
+}
+
+.community-card {
+    position: relative;
+    overflow: hidden;
+    min-width: 0;
+    padding: 17px;
+    border: 1px solid var(--border);
+    border-radius: 19px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    transition: transform .2s,border-color .2s;
+}
+
+.community-card:active {
+    transform: scale(.98);
+}
+
+.community-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+}
+
+.community-icon {
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border-radius: 17px;
+    background: var(--surface-light);
+    font-size: 27px;
+}
+
+.community-privacy {
+    padding: 6px 9px;
+    border-radius: 20px;
+    background: rgba(117,68,154,.12);
+    color: var(--primary-light);
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.community-card h3 {
+    font-size: 15px;
+    margin-bottom: 8px;
+    overflow-wrap: anywhere;
+}
+
+.community-card p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.5;
+    min-height: 36px;
+    overflow-wrap: anywhere;
+}
+
+.community-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 17px;
+    padding-top: 13px;
+    border-top: 1px solid var(--border);
+}
+
+.community-members {
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.community-open-btn {
+    border: none;
+    border-radius: 10px;
+    padding: 9px 12px;
+    background: rgba(117,68,154,.18);
+    color: var(--primary-light);
+    font-size: 11px;
+    font-weight: bold;
+}
+
+/* EMPTY STATE */
+
+.empty-state {
+    display: none;
+    text-align: center;
+    padding: 35px 15px;
+    border: 1px dashed var(--border);
+    border-radius: 20px;
+    background: var(--surface);
+}
+
+.empty-state .empty-icon {
+    font-size: 42px;
+    margin-bottom: 12px;
+}
+
+.empty-state h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+}
+
+.empty-state p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px) {
+    .app-shell {
+        padding: 14px;
+    }
+
+    .community-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .community-hero {
+        padding: 23px 19px;
+    }
+
+    .brand-name {
+        font-size: 21px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app-shell">
+
+    <!-- HEADER -->
+
+    <header class="topbar">
+
+        <div class="brand">
+            <div class="brand-icon">🌌</div>
+
+            <div class="brand-name">
+                VYRO<span>.</span>
+            </div>
+        </div>
+
+        <div class="header-actions">
+
+            <button class="icon-button"
+                    id="themeButton"
+                    title="Changer le thème">
+                🌙
+            </button>
+
+            <button class="icon-button"
+                    id="notificationButton"
+                    title="Notifications">
+                🔔
+            </button>
+
+        </div>
+
+    </header>
+
+    <!-- HERO -->
+
+    <section class="community-hero">
+
+        <div class="hero-label">
+            ✦ VYRO UNIVERSE
+        </div>
+
+        <h1>
+            Trouve ton <span>univers.</span><br>
+            Rejoins ta communauté.
+        </h1>
+
+        <p>
+            Découvre des espaces qui partagent tes passions,
+            échange avec leurs membres et suis leurs annonces.
+        </p>
+
+        <div class="hero-bottom">
+
+            <button class="create-community-btn"
+                    id="openCreateCommunity">
+                ＋ Créer une communauté
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- EXPLORATION -->
+
+    <div class="section-heading">
+        <h2>Explorer les communautés</h2>
+        <small>VYRO DISCOVER</small>
+    </div>
+
+    <div class="community-tabs">
+
+        <button class="community-tab active"
+                data-tab="discover">
+            🌍 Découvrir
+        </button>
+
+        <button class="community-tab"
+                data-tab="mine">
+            💜 Mes communautés
+        </button>
+
+        <button class="community-tab"
+                data-tab="popular">
+            🔥 Populaires
+        </button>
+
+    </div>
+
+    <!-- RECHERCHE -->
+
+    <div class="search-box">
+
+        <span>🔎</span>
+
+        <input
+            type="search"
+            id="communitySearch"
+            placeholder="Rechercher une communauté..."
+            autocomplete="off"
+        >
+
+    </div>
+
+    <!-- CATEGORIES -->
+
+    <div class="section-heading">
+        <h2>Explorer par passion</h2>
+    </div>
+
+    <div class="category-list" id="categoryList">
+
+        <button class="category-chip" data-category="all">
+            🌌 Tout
+        </button>
+
+        <button class="category-chip" data-category="Divertissement">
+            🎬 Divertissement
+        </button>
+
+        <button class="category-chip" data-category="Anime">
+            🍥 Anime
+        </button>
+
+        <button class="category-chip" data-category="Manga">
+            📚 Manga
+        </button>
+
+        <button class="category-chip" data-category="Gaming">
+            🎮 Gaming
+        </button>
+
+        <button class="category-chip" data-category="Sport">
+            ⚽ Sport
+        </button>
+
+        <button class="category-chip" data-category="Technologie">
+            💻 Technologie
+        </button>
+
+        <button class="category-chip" data-category="Musique">
+            🎵 Musique
+        </button>
+
+        <button class="category-chip" data-category="Education">
+            📖 Éducation
+        </button>
+
+    </div>
+
+    <!-- COMMUNAUTES -->
+
+    <div class="section-heading">
+
+        <h2 id="communitySectionTitle">
+            Communautés à découvrir
+        </h2>
+
+        <small id="communityCount">
+            VYRO
+        </small>
+
+    </div>
+
+    <div class="community-grid" id="communityGrid">
+
+        <!-- Les cartes seront ajoutées par JavaScript -->
+
+    </div>
+
+    <div class="empty-state" id="communityEmpty">
+
+        <div class="empty-icon">🌌</div>
+
+        <h3>Aucune communauté trouvée</h3>
+
+        <p>
+            Essaie une autre recherche ou explore
+            une autre catégorie.
+        </p>
+
+    </div>
+
+<!-- FIN DU MORCEAU 1 -->
+  <!-- =====================================
+     MODALE DE CREATION DE COMMUNAUTE
+===================================== -->
+
+<style>
+
+/* MODALES */
+
+.vyro-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: rgba(0,0,0,.78);
+    backdrop-filter: blur(9px);
+}
+
+.vyro-modal.show {
+    display: flex;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 22px;
+    border: 1px solid var(--border);
+    border-radius: 23px;
+    background: var(--surface);
+    box-shadow: 0 20px 70px rgba(0,0,0,.4);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
+}
+
+.modal-header h2 {
+    font-size: 19px;
+}
+
+.modal-close {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 19px;
+}
+
+.form-group {
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 9px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 14px;
+}
+
+.form-group textarea {
+    min-height: 85px;
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-light);
+}
+
+.form-hint {
+    display: block;
+    margin-top: 7px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.community-icon-selector {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.selected-community-icon {
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--surface-light);
+    font-size: 32px;
+}
+
+.choose-emoji-btn {
+    padding: 11px 14px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 12px;
+}
+
+.color-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 11px;
+}
+
+.color-choice {
+    width: 29px;
+    height: 29px;
+    border: 3px solid transparent;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.color-choice.active {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+}
+
+.form-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 13px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--surface-light);
+}
+
+.form-option strong {
+    display: block;
+    font-size: 13px;
+}
+
+.form-option small {
+    display: block;
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 11px;
+}
+
+.form-option input {
+    width: 19px;
+    height: 19px;
+    accent-color: var(--primary);
+}
+
+.modal-submit {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg,#75449a,#a77bc8);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.modal-submit:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* SELECTEUR EMOJI */
+
+.emoji-modal-content {
+    max-width: 440px;
+}
+
+.emoji-search {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    outline: none;
+    background: var(--surface-light);
+    color: var(--text);
+}
+
+.emoji-category-tabs {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 12px;
+    scrollbar-width: none;
+}
+
+.emoji-category-tabs button {
+    flex-shrink: 0;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 12px;
+}
+
+.emoji-category-tabs button.active {
+    background: var(--primary);
+    color: white;
+}
+
+.emoji-grid {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    gap: 7px;
+    max-height: 270px;
+    overflow-y: auto;
+}
+
+.emoji-choice {
+    aspect-ratio: 1;
+    border: none;
+    border-radius: 10px;
+    background: var(--surface-light);
+    font-size: 25px;
+}
+
+.emoji-choice:active {
+    background: rgba(117,68,154,.35);
+    transform: scale(.92);
+}
+
+.emoji-section-title {
+    margin: 13px 0;
+    color: var(--muted);
+    font-size: 12px;
+}
+
+/* NOTIFICATIONS */
+
+.notification-empty {
+    padding: 30px 10px;
+    text-align: center;
+}
+
+.notification-empty div {
+    margin-bottom: 12px;
+    font-size: 42px;
+}
+
+.notification-empty p {
+    margin-top: 8px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+/* NAVIGATION */
+
+.bottom-navigation {
+    position: fixed;
+    z-index: 500;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 5px calc(10px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+    backdrop-filter: blur(15px);
+}
+
+.nav-item {
+    min-width: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.nav-item span {
+    font-size: 21px;
+}
+
+.nav-item.active {
+    color: var(--primary-light);
+    font-weight: bold;
+}
+
+.nav-item.active span {
+    filter: drop-shadow(0 0 7px rgba(180,154,203,.5));
+}
+
+/* MESSAGE FLOTTANT */
+
+.vyro-toast {
+    position: fixed;
+    z-index: 2000;
+    left: 50%;
+    bottom: 95px;
+    transform: translateX(-50%) translateY(20px);
+    width: max-content;
+    max-width: 90%;
+    padding: 13px 18px;
+    border: 1px solid var(--border);
+    border-radius: 13px;
+    background: var(--surface-light);
+    color: var(--text);
+    font-size: 13px;
+    opacity: 0;
+    pointer-events: none;
+    transition: .25s;
+}
+
+.vyro-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+@media(max-width:380px) {
+    .emoji-grid {
+        grid-template-columns: repeat(6,1fr);
+    }
+
+    .modal-content {
+        padding: 17px;
+    }
+}
+
+</style>
+
+
+<!-- MODALE CREATION -->
+
+<div class="vyro-modal" id="createCommunityModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>✨ Créer une communauté</h2>
+
+            <button class="modal-close"
+                    id="closeCreateCommunity">
+                ×
+            </button>
+
+        </div>
+
+        <form id="createCommunityForm">
+
+            <div class="form-group">
+
+                <label>Icône de ta communauté</label>
+
+                <div class="community-icon-selector">
+
+                    <div class="selected-community-icon"
+                         id="selectedCommunityIcon">
+                        💬
+                    </div>
+
+                    <button type="button"
+                            class="choose-emoji-btn"
+                            id="openCommunityEmoji">
+                        😀 Choisir un emoji
+                    </button>
+
+                </div>
+
+                <input type="hidden"
+                       id="communityEmoji"
+                       value="💬">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityName">
+                    Nom de la communauté
+                </label>
+
+                <input
+                    type="text"
+                    id="communityName"
+                    maxlength="40"
+                    placeholder="Ex : Les passionnés d'anime"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityDescription">
+                    Description
+                </label>
+
+                <textarea
+                    id="communityDescription"
+                    maxlength="300"
+                    placeholder="Présente ton univers..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityCategory">
+                    Catégorie
+                </label>
+
+                <select id="communityCategory" required>
+
+                    <option value="">Choisir une catégorie</option>
+                    <option value="Divertissement">🎬 Divertissement</option>
+                    <option value="Anime">🍥 Anime</option>
+                    <option value="Manga">📚 Manga</option>
+                    <option value="Gaming">🎮 Gaming</option>
+                    <option value="Sport">⚽ Sport</option>
+                    <option value="Technologie">💻 Technologie</option>
+                    <option value="Musique">🎵 Musique</option>
+                    <option value="Education">📖 Éducation</option>
+                    <option value="Art">🎨 Art</option>
+                    <option value="Science">🔬 Science</option>
+                    <option value="Autre">🌌 Autre</option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>Couleur de la communauté</label>
+
+                <div class="color-options">
+
+                    <button type="button"
+                            class="color-choice active"
+                            data-color="#75449a"
+                            style="background:#75449a"></button>
+
+                    <button type="button"
+                            class="color-choice"
+                            data-color="#3976d2"
+                            style="background:#3976d2"></button>
+
+                    <button type="button"
+                            class="color-choice"
+                            data-color="#159c83"
+                            style="background:#159c83"></button>
+
+                    <button type="button"
+                            class="color-choice"
+                            data-color="#d45c8d"
+                            style="background:#d45c8d"></button>
+
+                    <button type="button"
+                            class="color-choice"
+                            data-color="#c58b31"
+                            style="background:#c58b31"></button>
+
+                    <button type="button"
+                            class="color-choice"
+                            data-color="#d34b4b"
+                            style="background:#d34b4b"></button>
+
+                </div>
+
+                <input type="hidden"
+                       id="communityColor"
+                       value="#75449a">
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityPrivacy">
+                    Confidentialité
+                </label>
+
+                <select id="communityPrivacy">
+
+                    <option value="public">
+                        🌍 Publique — Tout le monde peut découvrir
+                    </option>
+
+                    <option value="private">
+                        🔒 Privée — Accès sur demande
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityRules">
+                    Règles de la communauté
+                </label>
+
+                <textarea
+                    id="communityRules"
+                    maxlength="2000"
+                    placeholder="Définis les règles de ton espace..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communityWelcome">
+                    Message de bienvenue
+                </label>
+
+                <textarea
+                    id="communityWelcome"
+                    maxlength="1000"
+                    placeholder="Souhaite la bienvenue aux nouveaux membres..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="form-option">
+
+                <div>
+                    <strong>❤️ Autoriser les réactions</strong>
+                    <small>Les membres pourront réagir aux messages.</small>
+                </div>
+
+                <input type="checkbox"
+                       id="communityAllowReactions"
+                       checked>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="communitySlowMode">
+                    Mode lent
+                </label>
+
+                <select id="communitySlowMode">
+
+                    <option value="0">Désactivé</option>
+                    <option value="10">10 secondes</option>
+                    <option value="30">30 secondes</option>
+                    <option value="60">1 minute</option>
+                    <option value="300">5 minutes</option>
+
+                </select>
+
+                <small class="form-hint">
+                    Définit le délai entre les publications autorisées.
+                </small>
+
+            </div>
+
+
+            <button type="submit"
+                    class="modal-submit"
+                    id="createCommunitySubmit">
+                🚀 Créer ma communauté
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- SELECTEUR D'EMOJIS -->
+
+<div class="vyro-modal" id="communityEmojiModal">
+
+    <div class="modal-content emoji-modal-content">
+
+        <div class="modal-header">
+
+            <h2>😀 Choisir un emoji</h2>
+
+            <button class="modal-close"
+                    id="closeCommunityEmoji">
+                ×
+            </button>
+
+        </div>
+
+        <input
+            type="search"
+            class="emoji-search"
+            id="communityEmojiSearch"
+            placeholder="Rechercher un emoji..."
+        >
+
+        <div class="emoji-category-tabs">
+
+            <button class="active" data-emoji-category="emotions">
+                😀 Émotions
+            </button>
+
+            <button data-emoji-category="love">
+                ❤️ Amour
+            </button>
+
+            <button data-emoji-category="animals">
+                🐼 Animaux
+            </button>
+
+            <button data-emoji-category="nature">
+                🌿 Nature
+            </button>
+
+            <button data-emoji-category="food">
+                🍕 Nourriture
+            </button>
+
+            <button data-emoji-category="gaming">
+                🎮 Gaming
+            </button>
+
+            <button data-emoji-category="objects">
+                🚀 Objets
+            </button>
+
+        </div>
+
+        <div class="emoji-section-title">
+            Sélectionne ton emoji
+        </div>
+
+        <div class="emoji-grid"
+             id="communityEmojiGrid">
+
+            <!-- Les emojis seront ajoutés en JavaScript -->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- MODALE NOTIFICATIONS -->
+
+<div class="vyro-modal" id="communityNotificationsModal">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h2>🔔 Notifications</h2>
+
+            <button class="modal-close"
+                    id="closeCommunityNotifications">
+                ×
+            </button>
+
+        </div>
+
+        <div class="notification-empty">
+
+            <div>🌌</div>
+
+            <h3>Ton univers est calme</h3>
+
+            <p>
+                Les nouvelles activités de tes communautés
+                apparaîtront ici.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- NAVIGATION PRINCIPALE -->
+
+<nav class="bottom-navigation">
+
+    <a href="accueil.html" class="nav-item">
+        <span>🏠</span>
+        Discussions
+    </a>
+
+    <a href="actus.html" class="nav-item">
+        <span>📰</span>
+        Actus
+    </a>
+
+    <a href="communautes.html"
+       class="nav-item active">
+        <span>🌌</span>
+        Communautés
+    </a>
+
+    <a href="appels.html" class="nav-item">
+        <span>📞</span>
+        Appels
+    </a>
+
+</nav>
+
+
+<!-- CONTENEUR DES MESSAGES -->
+
+<div class="vyro-toast" id="vyroToast"></div>
+
+<!-- FIN DU MORCEAU 2 -->
+  <script>
+
+/* =========================================
+   VYRO COMMUNAUTES
+   PARTIE 3 - MORCEAU 3
+   EMOJI CENTER ET INTERACTIONS
+========================================= */
+
+window.VYRO_UI = window.VYRO_UI || {};
+
+const VYRO_UI = window.VYRO_UI;
+
+
+/* =========================================
+   1. GESTION DES MESSAGES FLOTTANTS
+========================================= */
+
+VYRO_UI.toast = function(message) {
+
+    const toast = document.getElementById("vyroToast");
+
+    if (!toast) return;
+
+    toast.textContent = message;
+    toast.classList.add("show");
+
+    clearTimeout(VYRO_UI.toastTimer);
+
+    VYRO_UI.toastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2800);
+
+};
+
+
+/* =========================================
+   2. GESTION DES MODALES
+========================================= */
+
+VYRO_UI.openModal = function(id) {
+
+    const modal = document.getElementById(id);
+
+    if (modal) {
+        modal.classList.add("show");
+        document.body.style.overflow = "hidden";
+    }
+
+};
+
+
+VYRO_UI.closeModal = function(id) {
+
+    const modal = document.getElementById(id);
+
+    if (modal) {
+        modal.classList.remove("show");
+    }
+
+    const anotherOpen = document.querySelector(".vyro-modal.show");
+
+    if (!anotherOpen) {
+        document.body.style.overflow = "";
+    }
+
+};
+
+
+/* OUVERTURE CREATION */
+
+document.getElementById("openCreateCommunity")
+.addEventListener("click", () => {
+
+    VYRO_UI.openModal("createCommunityModal");
+
+});
+
+
+/* FERMETURE CREATION */
+
+document.getElementById("closeCreateCommunity")
+.addEventListener("click", () => {
+
+    VYRO_UI.closeModal("createCommunityModal");
+
+});
+
+
+/* OUVERTURE NOTIFICATIONS */
+
+document.getElementById("notificationButton")
+.addEventListener("click", () => {
+
+    VYRO_UI.openModal("communityNotificationsModal");
+
+});
+
+
+/* FERMETURE NOTIFICATIONS */
+
+document.getElementById("closeCommunityNotifications")
+.addEventListener("click", () => {
+
+    VYRO_UI.closeModal("communityNotificationsModal");
+
+});
+
+
+/* FERMETURE EN CLIQUANT A L'EXTERIEUR */
+
+document.querySelectorAll(".vyro-modal")
+.forEach(modal => {
+
+    modal.addEventListener("click", event => {
+
+        if (event.target === modal) {
+
+            VYRO_UI.closeModal(modal.id);
+
+        }
+
+    });
+
+});
+
+
+/* FERMETURE AVEC ECHAP */
+
+document.addEventListener("keydown", event => {
+
+    if (event.key === "Escape") {
+
+        document.querySelectorAll(".vyro-modal.show")
+        .forEach(modal => {
+
+            VYRO_UI.closeModal(modal.id);
+
+        });
+
+    }
+
+});
+
+
+/* =========================================
+   3. CHANGEMENT DE THEME
+========================================= */
+
+const themeButton = document.getElementById("themeButton");
+
+function updateThemeButton() {
+
+    const theme = document.documentElement
+    .getAttribute("data-theme");
+
+    themeButton.textContent =
+        theme === "light" ? "☀️" : "🌙";
+
+}
+
+updateThemeButton();
+
+themeButton.addEventListener("click", () => {
+
+    const currentTheme = document.documentElement
+    .getAttribute("data-theme");
+
+    const newTheme =
+        currentTheme === "dark" ? "light" : "dark";
+
+    document.documentElement
+    .setAttribute("data-theme", newTheme);
+
+    localStorage.setItem("vyro_theme", newTheme);
+
+    updateThemeButton();
+
+});
+
+
+/* =========================================
+   4. SELECTION DES COULEURS
+========================================= */
+
+const colorChoices = document.querySelectorAll(".color-choice");
+
+colorChoices.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        colorChoices.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        document.getElementById("communityColor").value =
+            button.dataset.color;
+
+    });
+
+});
+
+
+/* =========================================
+   5. BIBLIOTHEQUE D'EMOJIS
+========================================= */
+
+const VYRO_EMOJIS = {
+
+    emotions: `
+
+😀 😃 😄 😁 😆 😅 😂 🤣 🥲 ☺️ 😊 😇 🙂 🙃 😉 😌
+😍 🥰 😘 😗 😙 😚 😋 😛 😝 😜 🤪 🤨 🧐 🤓 😎 🥸
+🤩 🥳 😏 😒 😞 😔 😟 😕 🙁 ☹️ 😣 😖 😫 😩 🥺
+😢 😭 😤 😠 😡 🤬 🤯 😳 🥵 🥶 😶‍🌫️ 😱 😨 😰
+😥 😓 🤗 🤔 🫣 🤭 🫢 🫡 🤫 🫠 🤥 😶 😐 😑 😬
+🙄 😮‍💨 🤤 😴 🥱 😪 🤧 🤒 🤕 🤢 🤮 😷 🤐 🤑
+🤠 😈 👿 👹 👺 💀 ☠️ 👻 👽 🤖 🎃 💩 🙈 🙉 🙊
+🫶 👐 🙌 👏 🤝 👍 👎 👊 ✊ 🤛 🤜 🤞 ✌️ 🤟 🤘
+👌 🤌 🤏 🫰 🤙 👈 👉 👆 👇 ☝️ ✋ 🤚 🖐️ 🖖 👋
+🫵 🫱 🫲 🫳 🫴 🙏 💪 🦾 🦿 🫂
+
+    `.trim().split(/\s+/),
+
+    love: `
+
+❤️ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 🩷 🩵 🩶
+💖 💗 💓 💞 💕 💘 💝 💟 ❣️ 💌 💋 💍
+🌹 🥀 💐 🌷 🌸 💮 🏵️ 🌺 🌻 🌼
+
+    `.trim().split(/\s+/),
+
+    animals: `
+
+🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐻‍❄️ 🐨 🐯 🦁
+🐮 🐷 🐸 🐵 🙈 🙉 🙊 🐔 🐧 🐦 🐤 🦆
+🦅 🦉 🦇 🐺 🐗 🐴 🦄 🐝 🦋 🐌 🐞
+🐢 🐍 🦎 🐙 🦑 🦀 🐠 🐟 🐬 🐳 🦈
+🐊 🐘 🦒 🦓 🦍 🦧 🐪 🐫 🦘 🦥 🦦
+
+    `.trim().split(/\s+/),
+
+    nature: `
+
+🌍 🌎 🌏 🌕 🌖 🌗 🌘 🌑 🌒 🌓 🌔
+🌞 🌝 🌛 🌜 🌚 ⭐ 🌟 ✨ ⚡ ☀️
+🌤️ ⛅ 🌥️ 🌦️ 🌧️ ⛈️ 🌩️ 🌨️ ❄️ ☃️
+🔥 💧 🌊 🌈 ☁️ 🌪️ 🌫️ 🌬️ 🌱 🌿
+☘️ 🍀 🌳 🌲 🌴 🌵 🌾 🌻 🌼 🌷
+
+    `.trim().split(/\s+/),
+
+    food: `
+
+🍎 🍐 🍊 🍋 🍌 🍉 🍇 🍓 🫐 🍈
+🍒 🍑 🥭 🍍 🥥 🥝 🍅 🥑 🍆 🥔
+🥕 🌽 🌶️ 🥒 🥬 🥦 🧄 🧅 🍄
+🥜 🌰 🍞 🥐 🥖 🥨 🧀 🥚 🍳
+🥞 🧇 🥓 🍔 🍟 🍕 🌭 🥪 🌮
+🌯 🥙 🧆 🍝 🍜 🍣 🍱 🍛 🍚
+🍰 🎂 🧁 🍫 🍬 🍭 🍩 🍪 🍿
+☕ 🧃 🥤 🧋 🧊
+
+    `.trim().split(/\s+/),
+
+    gaming: `
+
+🎮 🕹️ 👾 🎲 ♟️ 🧩 🎯 🏆 🥇 🥈
+🥉 🎖️ 🏅 ⚔️ 🛡️ 🗡️ 🧙 🧝 🧛
+🧟 🧌 🐉 🐲 🚀 👨‍🚀 👽 🤖 💻
+🖥️ ⌨️ 🖱️ 📱 📲 🎧 🎤 🔊
+
+    `.trim().split(/\s+/),
+
+    objects: `
+
+🚀 ✈️ 🚁 🚗 🚕 🚌 🚎 🏎️ 🚓 🚑
+🚒 🚚 🚛 🚜 🚲 🛵 🏍️ 🚂 🚆 🚄
+🚢 ⛵ ⚓ 🛸 🛰️ 🏠 🏡 🏢 🏰 🏯
+🔑 🗝️ 🔒 🔓 🔔 📢 📣 💡 🔦
+📷 📸 🎥 📺 📻 ⏰ ⌚ 📚 📖 ✏️
+🖊️ 📝 💎 💰 💵 💳 🎁 🎈 🎉
+
+    `.trim().split(/\s+/)
+
+};
+
+
+/* =========================================
+   6. MOTS-CLES DE RECHERCHE
+========================================= */
+
+const VYRO_EMOJI_NAMES = {
+
+    "😀": "sourire heureux content",
+    "😂": "rire drôle amusant",
+    "🤣": "fou rire",
+    "🥰": "amour amoureux affection",
+    "😍": "coeur amoureux",
+    "😘": "bisou baiser",
+    "🥳": "fête anniversaire célébration",
+    "😎": "cool classe lunettes",
+    "🤔": "penser réflexion question",
+    "😴": "dormir sommeil fatigue",
+    "🥱": "bâiller fatigue",
+    "😢": "triste pleurer",
+    "😭": "pleurs tristesse",
+    "😡": "colère énervé",
+    "🤬": "furieux rage",
+    "😱": "peur effrayé",
+    "🤯": "choqué explosion",
+    "😳": "gêné surpris",
+    "🤗": "câlin affection",
+    "🙄": "yeux sarcasme",
+    "😏": "sourire malicieux",
+    "🥺": "suppliant touchant",
+    "🤩": "émerveillé étoiles",
+    "🤢": "dégoût malade",
+    "🤮": "vomir dégoût",
+    "😇": "ange innocent",
+    "🤐": "silence bouche fermée",
+    "🤫": "chut secret silence",
+    "🤑": "argent riche",
+    "👍": "oui accord bravo",
+    "👎": "non désaccord",
+    "👏": "applaudir bravo",
+    "🙏": "merci prière s'il te plaît",
+    "❤️": "coeur amour",
+    "💜": "coeur violet",
+    "🔥": "feu chaud incroyable",
+    "🎮": "jeu gaming",
+    "🚀": "fusée espace",
+    "🌹": "rose fleur",
+    "🐱": "chat",
+    "🐶": "chien",
+    "🍕": "pizza",
+    "🍔": "hamburger",
+    "⚽": "football sport",
+    "🏆": "trophée victoire"
+
+};
+
+
+/* =========================================
+   7. FAVORIS ET HISTORIQUE
+========================================= */
+
+function getEmojiStorage(key) {
+
+    try {
+
+        const data = JSON.parse(localStorage.getItem(key));
+
+        return Array.isArray(data) ? data : [];
+
+    } catch(error) {
+
+        return [];
+
+    }
+
+}
+
+
+let VYRO_FAVORITES = getEmojiStorage("vyro_emoji_favorites");
+
+let VYRO_RECENTS = getEmojiStorage("vyro_emoji_recents");
+
+
+function saveEmojiStorage() {
+
+    localStorage.setItem(
+        "vyro_emoji_favorites",
+        JSON.stringify(VYRO_FAVORITES)
+    );
+
+    localStorage.setItem(
+        "vyro_emoji_recents",
+        JSON.stringify(VYRO_RECENTS)
+    );
+
+}
+
+
+/* =========================================
+   8. AJOUT FAVORIS / RECENTS
+========================================= */
+
+function addRecentEmoji(emoji) {
+
+    VYRO_RECENTS = [
+        emoji,
+        ...VYRO_RECENTS.filter(item => item !== emoji)
+    ].slice(0, 40);
+
+    saveEmojiStorage();
+
+}
+
+
+function toggleFavoriteEmoji(emoji) {
+
+    if (VYRO_FAVORITES.includes(emoji)) {
+
+        VYRO_FAVORITES =
+            VYRO_FAVORITES.filter(item => item !== emoji);
+
+        VYRO_UI.toast("Emoji retiré des favoris");
+
+    } else {
+
+        VYRO_FAVORITES.push(emoji);
+
+        VYRO_UI.toast("⭐ Emoji ajouté aux favoris");
+
+    }
+
+    saveEmojiStorage();
+
+    renderCommunityEmojis();
+
+}
+
+
+/* =========================================
+   9. ONGLETS EMOJIS
+========================================= */
+
+const emojiTabs = document.querySelector(".emoji-category-tabs");
+
+emojiTabs.insertAdjacentHTML(
+
+    "afterbegin",
+
+    `
+    <button data-emoji-category="favorites">
+        ⭐ Favoris
+    </button>
+
+    <button data-emoji-category="recent">
+        🕘 Récents
+    </button>
+    `
+
+);
+
+
+let currentEmojiCategory = "emotions";
+
+
+function getCurrentEmojiList() {
+
+    if (currentEmojiCategory === "favorites") {
+        return VYRO_FAVORITES;
+    }
+
+    if (currentEmojiCategory === "recent") {
+        return VYRO_RECENTS;
+    }
+
+    return VYRO_EMOJIS[currentEmojiCategory] || [];
+
+}
+
+
+/* =========================================
+   10. AFFICHAGE DES EMOJIS
+========================================= */
+
+function renderCommunityEmojis() {
+
+    const grid = document.getElementById("communityEmojiGrid");
+
+    const search = document.getElementById("communityEmojiSearch");
+
+    const query = search.value.trim().toLowerCase();
+
+    let emojis = getCurrentEmojiList();
+
+    if (query) {
+
+        emojis = emojis.filter(emoji => {
+
+            const words = VYRO_EMOJI_NAMES[emoji] || "";
+
+            return emoji.includes(query) ||
+                   words.toLowerCase().includes(query);
+
+        });
+
+    }
+
+    grid.innerHTML = "";
+
+    if (emojis.length === 0) {
+
+        grid.innerHTML = `
+            <p style="
+                grid-column:1/-1;
+                color:var(--muted);
+                text-align:center;
+                padding:20px;
+                font-size:13px;
+            ">
+                Aucun emoji trouvé.
+            </p>
+        `;
+
+        return;
+
+    }
+
+    emojis.forEach(emoji => {
+
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "emoji-choice";
+        button.textContent = emoji;
+        button.title = VYRO_EMOJI_NAMES[emoji] || emoji;
+
+        button.addEventListener("click", () => {
+
+            selectCommunityEmoji(emoji);
+
+        });
+
+        button.addEventListener("contextmenu", event => {
+
+            event.preventDefault();
+
+            toggleFavoriteEmoji(emoji);
+
+        });
+
+        grid.appendChild(button);
+
+    });
+
+}
+
+
+/* =========================================
+   11. SELECTION DE L'EMOJI
+========================================= */
+
+function selectCommunityEmoji(emoji) {
+
+    document.getElementById("communityEmoji").value = emoji;
+
+    document.getElementById("selectedCommunityIcon")
+    .textContent = emoji;
+
+    addRecentEmoji(emoji);
+
+    VYRO_UI.closeModal("communityEmojiModal");
+
+}
+
+
+/* OUVRIR LE SELECTEUR */
+
+document.getElementById("openCommunityEmoji")
+.addEventListener("click", () => {
+
+    document.getElementById("communityEmojiSearch").value = "";
+
+    currentEmojiCategory = "emotions";
+
+    document.querySelectorAll("[data-emoji-category]")
+    .forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.emojiCategory === "emotions"
+        );
+
+    });
+
+    renderCommunityEmojis();
+
+    VYRO_UI.openModal("communityEmojiModal");
+
+});
+
+
+/* FERMER LE SELECTEUR */
+
+document.getElementById("closeCommunityEmoji")
+.addEventListener("click", () => {
+
+    VYRO_UI.closeModal("communityEmojiModal");
+
+});
+
+
+/* CHANGER DE CATEGORIE */
+
+emojiTabs.addEventListener("click", event => {
+
+    const button = event.target.closest("[data-emoji-category]");
+
+    if (!button) return;
+
+    currentEmojiCategory = button.dataset.emojiCategory;
+
+    document.querySelectorAll("[data-emoji-category]")
+    .forEach(tab => {
+
+        tab.classList.toggle("active", tab === button);
+
+    });
+
+    document.getElementById("communityEmojiSearch").value = "";
+
+    renderCommunityEmojis();
+
+});
+
+
+/* RECHERCHE */
+
+document.getElementById("communityEmojiSearch")
+.addEventListener("input", () => {
+
+    renderCommunityEmojis();
+
+});
+
+
+/* PREMIER AFFICHAGE */
+
+renderCommunityEmojis();
+
+
+/* =========================================
+   12. NAVIGATION ENTRE LES ONGLETS
+========================================= */
+
+const communityTabs = document.querySelectorAll(".community-tab");
+
+communityTabs.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        communityTabs.forEach(tab => {
+            tab.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        VYRO_UI.currentTab = button.dataset.tab;
+
+        document.getElementById("communitySectionTitle")
+        .textContent =
+            button.dataset.tab === "mine"
+            ? "Mes communautés"
+            : button.dataset.tab === "popular"
+            ? "Communautés populaires"
+            : "Communautés à découvrir";
+
+        window.dispatchEvent(
+            new CustomEvent("vyro:tabchange", {
+                detail: {
+                    tab: button.dataset.tab
+                }
+            })
+        );
+
+    });
+
+});
+
+
+/* =========================================
+   13. FILTRES DES CATEGORIES
+========================================= */
+
+const categoryButtons = document.querySelectorAll(".category-chip");
+
+categoryButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        categoryButtons.forEach(item => {
+            item.classList.remove("active");
+        });
+
+        button.classList.add("active");
+
+        VYRO_UI.currentCategory = button.dataset.category;
+
+        window.dispatchEvent(
+            new CustomEvent("vyro:categorychange", {
+                detail: {
+                    category: button.dataset.category
+                }
+            })
+        );
+
+    });
+
+});
+
+
+/* =========================================
+   14. RECHERCHE DES COMMUNAUTES
+========================================= */
+
+document.getElementById("communitySearch")
+.addEventListener("input", event => {
+
+    VYRO_UI.search = event.target.value.trim().toLowerCase();
+
+    window.dispatchEvent(
+        new CustomEvent("vyro:search", {
+            detail: {
+                search: VYRO_UI.search
+            }
+        })
+    );
+
+});
+
+
+/* =========================================
+   15. INITIALISATION
+========================================= */
+
+VYRO_UI.currentTab = "discover";
+VYRO_UI.currentCategory = "all";
+VYRO_UI.search = "";
+
+console.log("VYRO Emoji Center initialisé 💜");
+
+</script>
+
+<!-- FIN DU MORCEAU 3 -->

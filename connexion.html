@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#090914">
+
+<title>Connexion | VYRO</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: radial-gradient(circle at top, #24134b, #090914 65%);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(19, 17, 38, 0.95);
+    border: 1px solid rgba(169, 135, 255, 0.25);
+    border-radius: 24px;
+    padding: 30px 24px;
+    box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+}
+
+.logo {
+    text-align: center;
+    font-size: 38px;
+    font-weight: 900;
+    letter-spacing: 5px;
+    color: #b99aff;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #aaa5bd;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+.language-select {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 25px;
+}
+
+.language-select button {
+    background: #100e20;
+    color: white;
+    border: 1px solid #37304f;
+    border-radius: 9px;
+    padding: 9px 11px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.language-select button.active {
+    border-color: #a987ff;
+    background: #2a2045;
+    color: #c9adff;
+}
+
+h1 {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.description {
+    color: #aaa5bd;
+    font-size: 14px;
+    margin-bottom: 28px;
+    line-height: 1.6;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 10px;
+    color: #d8d2e8;
+}
+
+input {
+    display: block;
+    width: 100%;
+    height: 54px;
+    padding: 0 15px;
+    border-radius: 12px;
+    border: 1px solid #37304f;
+    background: #100e20;
+    color: white;
+    outline: none;
+    margin-bottom: 22px;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #a987ff;
+    box-shadow: 0 0 0 3px rgba(169,135,255,0.12);
+}
+
+.password-box {
+    position: relative;
+    width: 100%;
+    margin-bottom: 22px;
+}
+
+.password-box input {
+    margin-bottom: 0;
+    padding-right: 75px;
+}
+
+.show-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #b99aff;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 8px;
+}
+
+.forgot {
+    display: block;
+    text-align: right;
+    color: #b99aff;
+    font-size: 13px;
+    text-decoration: none;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.login-btn {
+    display: block;
+    width: 100%;
+    min-height: 56px;
+    padding: 16px;
+    border: none;
+    border-radius: 13px;
+    background: linear-gradient(135deg, #9c70ff, #7044db);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.login-btn:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+#message {
+    margin-top: 18px;
+    font-size: 13px;
+    text-align: center;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.signup {
+    text-align: center;
+    color: #aaa5bd;
+    font-size: 13px;
+    margin-top: 27px;
+    line-height: 1.7;
+}
+
+.signup a {
+    color: #b99aff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.country {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 12px;
+    color: #777187;
+}
+
+@media (max-width: 360px) {
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        padding: 25px 18px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<main class="container">
+
+<div class="logo">VYRO</div>
+
+<p class="subtitle">Connect without limits.</p>
+
+<div class="language-select">
+
+<button type="button" onclick="choisirLangue('fr')" id="lang-fr">
+🇫🇷 FR
+</button>
+
+<button type="button" onclick="choisirLangue('en')" id="lang-en">
+🇬🇧 EN
+</button>
+
+<button type="button" onclick="choisirLangue('ja')" id="lang-ja">
+🇯🇵 日本語
+</button>
+
+</div>
+
+<h1 id="title">Bon retour !</h1>
+
+<p class="description" id="description">
+Connecte-toi pour retrouver tes conversations
+et tes communautés.
+</p>
+
+<form id="loginForm" autocomplete="on">
+
+<label for="email" id="emailLabel">
+Adresse e-mail
+</label>
+
+<input
+type="email"
+id="email"
+name="email"
+placeholder="exemple@email.com"
+autocomplete="username"
+required
+>
+
+<label for="password" id="passwordLabel">
+Mot de passe
+</label>
+
+<div class="password-box">
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Ton mot de passe"
+autocomplete="current-password"
+required
+>
+
+<button
+type="button"
+class="show-password"
+id="togglePassword"
+>
+Voir
+</button>
+
+</div>
+
+<a href="#" class="forgot" id="forgotPassword">
+Mot de passe oublié ?
+</a>
+
+<button
+type="submit"
+class="login-btn"
+id="loginButton"
+>
+Se connecter
+</button>
+
+<p id="message" aria-live="polite"></p>
+
+</form>
+
+<p class="signup" id="signupText">
+Tu n'as pas encore de compte ?
+<a href="inscription.html" id="signupLink">
+Créer un compte
+</a>
+</p>
+
+<p class="country" id="country">
+🇨🇮 Créé en Côte d'Ivoire
+</p>
+
+</main>
+<script>
+
+const SUPABASE_URL =
+"https://baudgidnnyjgfnepbiyn.supabase.co";
+
+// Garde ici ta véritable clé Publishable Supabase.
+const SUPABASE_KEY =
+"sb_publishable_R8oJ3O_avypAbwyATrcreQ_pt47CUb7";
+
+
+const traductions = {
+
+fr: {
+title: "Bon retour !",
+description: "Connecte-toi pour retrouver tes conversations et tes communautés.",
+email: "Adresse e-mail",
+password: "Mot de passe",
+placeholderPassword: "Ton mot de passe",
+show: "Voir",
+hide: "Masquer",
+forgot: "Mot de passe oublié ?",
+login: "Se connecter",
+signup: "Tu n'as pas encore de compte ?",
+signupLink: "Créer un compte",
+country: "🇨🇮 Créé en Côte d'Ivoire",
+loading: "Connexion en cours...",
+success: "Connexion réussie !",
+emailRequired: "Entre ton adresse e-mail.",
+sending: "Envoi en cours...",
+resetSuccess: "Si cette adresse est enregistrée, un lien de réinitialisation a été envoyé.",
+error: "Erreur : ",
+supabaseError: "Impossible de charger Supabase. Vérifie ta connexion Internet.",
+noSession: "Aucune session n'a été créée."
+},
+
+en: {
+title: "Welcome back!",
+description: "Log in to find your conversations and communities.",
+email: "Email address",
+password: "Password",
+placeholderPassword: "Your password",
+show: "Show",
+hide: "Hide",
+forgot: "Forgot password?",
+login: "Log in",
+signup: "Don't have an account yet?",
+signupLink: "Create an account",
+country: "🇨🇮 Made in Côte d'Ivoire",
+loading: "Logging in...",
+success: "Login successful!",
+emailRequired: "Enter your email address.",
+sending: "Sending...",
+resetSuccess: "If this address is registered, a reset link has been sent.",
+error: "Error: ",
+supabaseError: "Unable to load Supabase. Check your Internet connection.",
+noSession: "No session was created."
+},
+
+ja: {
+title: "おかえりなさい！",
+description: "ログインして会話やコミュニティにアクセスしましょう。",
+email: "メールアドレス",
+password: "パスワード",
+placeholderPassword: "パスワードを入力",
+show: "表示",
+hide: "非表示",
+forgot: "パスワードをお忘れですか？",
+login: "ログイン",
+signup: "まだアカウントをお持ちでないですか？",
+signupLink: "アカウントを作成",
+country: "🇨🇮 コートジボワール製",
+loading: "ログイン中...",
+success: "ログイン成功！",
+emailRequired: "メールアドレスを入力してください。",
+sending: "送信中...",
+resetSuccess: "登録されている場合、再設定リンクを送信しました。",
+error: "エラー：",
+supabaseError: "Supabaseを読み込めません。インターネット接続を確認してください。",
+noSession: "セッションが作成されませんでした。"
+}
+
+};
+
+
+// ===================================
+// LANGUE
+// ===================================
+
+let langue =
+localStorage.getItem("vyro_language") || "fr";
+
+if (!traductions[langue]) {
+    langue = "fr";
+}
+
+
+function traduire() {
+
+    const t = traductions[langue];
+
+    document.documentElement.lang = langue;
+
+    document.getElementById("title").textContent = t.title;
+
+    document.getElementById("description").textContent = t.description;
+
+    document.getElementById("emailLabel").textContent = t.email;
+
+    document.getElementById("passwordLabel").textContent = t.password;
+
+    document.getElementById("password").placeholder =
+        t.placeholderPassword;
+
+    document.getElementById("forgotPassword").textContent = t.forgot;
+
+    document.getElementById("loginButton").textContent = t.login;
+
+    document.getElementById("signupText").childNodes[0].textContent =
+        t.signup + " ";
+
+    document.getElementById("signupLink").textContent = t.signupLink;
+
+    document.getElementById("country").textContent = t.country;
+
+    const visible =
+        document.getElementById("password").type === "text";
+
+    document.getElementById("togglePassword").textContent =
+        visible ? t.hide : t.show;
+
+    document.querySelectorAll(".language-select button").forEach(button => {
+        button.classList.remove("active");
+    });
+
+    document.getElementById("lang-" + langue).classList.add("active");
+
+}
+
+
+function choisirLangue(code) {
+
+    if (!traductions[code]) return;
+
+    langue = code;
+
+    localStorage.setItem("vyro_language", langue);
+
+    traduire();
+
+}
+  // ===================================
+// INITIALISATION SUPABASE
+// ===================================
+
+let client = null;
+
+try {
+
+    if (window.supabase && SUPABASE_KEY) {
+
+        client = window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+    }
+
+} catch (error) {
+
+    console.error("Erreur Supabase :", error);
+
+}
+
+
+// ===================================
+// MESSAGES
+// ===================================
+
+function afficherMessage(texte, couleur) {
+
+    const message = document.getElementById("message");
+
+    message.textContent = texte;
+    message.style.color = couleur;
+
+}
+
+
+// ===================================
+// AFFICHER / MASQUER LE MOT DE PASSE
+// ===================================
+
+const passwordInput = document.getElementById("password");
+
+const togglePassword =
+document.getElementById("togglePassword");
+
+togglePassword.addEventListener("click", function() {
+
+    const visible = passwordInput.type === "password";
+
+    passwordInput.type = visible ? "text" : "password";
+
+    traduire();
+
+});
+
+
+// ===================================
+// CONNEXION
+// ===================================
+
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+    const emailInput = document.getElementById("email");
+
+    const email = emailInput.value.trim();
+
+    const password = passwordInput.value;
+
+    const button = document.getElementById("loginButton");
+
+    const t = traductions[langue];
+
+    if (!email) {
+
+        afficherMessage(t.emailRequired, "#ff7777");
+
+        return;
+
+    }
+
+    if (!client) {
+
+        afficherMessage(t.supabaseError, "#ff7777");
+
+        return;
+
+    }
+
+    button.disabled = true;
+    button.textContent = t.loading;
+
+    afficherMessage("", "white");
+
+    try {
+
+        const { data, error } = await client.auth.signInWithPassword({
+
+            email: email,
+            password: password
+
+        });
+
+        if (error) throw error;
+
+        if (!data.session) {
+
+            throw new Error(t.noSession);
+
+        }
+
+        afficherMessage(t.success, "#8dffb0");
+
+        setTimeout(function() {
+
+            window.location.replace("accueil.html");
+
+        }, 700);
+
+    } catch (error) {
+
+        afficherMessage(
+            t.error + error.message,
+            "#ff7777"
+        );
+
+    } finally {
+
+        button.disabled = false;
+        button.textContent = t.login;
+
+    }
+
+});
+
+
+// ===================================
+// MOT DE PASSE OUBLIÉ
+// ===================================
+
+document.getElementById("forgotPassword")
+.addEventListener("click", async function(event) {
+
+    event.preventDefault();
+
+    const email = document.getElementById("email").value.trim();
+
+    const t = traductions[langue];
+
+    if (!email) {
+
+        afficherMessage(t.emailRequired, "#ff7777");
+
+        return;
+
+    }
+
+    if (!client) {
+
+        afficherMessage(t.supabaseError, "#ff7777");
+
+        return;
+
+    }
+
+    afficherMessage(t.sending, "#b99aff");
+
+    try {
+
+        const { error } = await client.auth.resetPasswordForEmail(
+            email,
+            {
+                redirectTo: window.location.origin + "/reinitialisation.html"
+            }
+        );
+
+        if (error) throw error;
+
+        afficherMessage(t.resetSuccess, "#8dffb0");
+
+    } catch (error) {
+
+        afficherMessage(
+            t.error + error.message,
+            "#ff7777"
+        );
+
+    }
+
+});
+
+
+// ===================================
+// INITIALISATION FINALE
+// ===================================
+
+traduire();
+
+</script>
+
+</body>
+</html>
